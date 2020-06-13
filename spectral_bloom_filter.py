@@ -7,59 +7,52 @@ import itertools
 import math
 import logging
 
-
 class Hash_Funcs:
-    def __init__(self, k: int, m: int):
+    def __init__( self, k:int, m:int):
         """
-        Creates optimal number of hash functions given m and n
+        Creates hash functions given m and k
             m - size of counter array
+            k - number of hash functions
         """
         self.k = k
         self.hash_funcs_list = []
         for i in range(self.k):
-            self.hash_funcs_list.append(
-                lambda x, s: mmh3_hash(x, seed=s, signed=False) % m)
+            self.hash_funcs_list.append( lambda x,s : mmh3_hash( x , seed = s, signed=False) % m )
 
-    def get_hashes(self, word: str) -> list:
+    def get_hashes(self, word:str )->list:
         """Returns a list of k hashed indices for the input word"""
-        return [self.hash_funcs_list[i](word, i) for i in range(self.k)]
+        return [ self.hash_funcs_list[i](word , i) for i in range(self.k)]
 
-    def check_hashes(self, word_list: list):
+    def check_hashes(self , word_list:list):
         """Logs the duplicate hashed indices for words in words_list"""
         faulty_words = set()
         for w in word_list:
             indices = self.get_hashes(w)
-            res = hash_funcs.check_duplicates(indices)
+            res = Hash_Funcs.check_duplicates(indices)
             if res and res[1] not in faulty_words:
                 faulty_words.add(res[1])
-                logger.warning(
-                    '\tWord:{} \n\tIndices:{} \n\tRepeated:{}'.format(
-                        w, indices, res[1]))
+                logger.warning('\tWord:{} \n\tIndices:{} \n\tRepeated:{}'.format(w , indices, res[1] ) )
 
     @staticmethod
-    def check_duplicates(indices_list: list):
+    def check_duplicates(indices_list:list):
         seen = set()
         for item in indices_list:
-            if item in seen: return True, item
+            if item in seen:  return True , item
             seen.add(item)
         return False
-
 
 class Spectral_Bloom_Filter:
     # k - no of hash functions
     # m - size of bit array
     # n - no of words in the document
 
-    def __init__(self, error_rate: float = 0.01):
+    def __init__(self,error_rate:float=0.01):
         self.error_rate = error_rate
 
-    def initialize_string(self, length: int):
-        return ('0' * length)
+    def initialize_string(self, length:int):
+        return ('0'*length)
 
-    def gen_counter_chunks(self,
-                           string: str,
-                           chunk_size: int,
-                           drop_remaining: bool = False) -> Iterator[str]:
+    def gen_counter_chunks(self, string: str, chunk_size:int, drop_remaining:bool=False) -> Iterable[str]: 
         """
         Yields an iterator of chunks of specified size
 
@@ -68,15 +61,6 @@ class Spectral_Bloom_Filter:
 
         >>> list(gen_counter_chunks('123456789A', 4)) == ['1234', '5678', '9A']
         >>> list(gen_counter_chunks('123456789A', 4, drop_remaining = True)) == ['1234', '5678']
-
-        :param string: The string to chunk
-        :type string: str
-        :param chunk_size: Size of individual chunk, the string will split in 
-        :type chunk_size: int
-        :param drop_remaining: Remove final chunks of invalid length, defaults to False
-        :type drop_remaining: bool, optional
-        :yield: A chunk of string of specified size
-        :rtype: Iterator[str]
         """
         string_length = len(string)
 
@@ -87,8 +71,8 @@ class Spectral_Bloom_Filter:
 
         for c in range(0, len(string), chunk_size):
             yield string[c:c + chunk_size]
-
-    def init_counter(self, counter_length: int) -> dict:
+    
+    def init_counter(self, counter_length:int) -> dict:
         """
         To initialize a binary counter for incrementing 
         Spectral Bloom Filter's counters.
@@ -100,13 +84,9 @@ class Spectral_Bloom_Filter:
         
         Returns: Dictionary used for binary counter operation
         """
-        digits = list(
-            map(''.join, list(itertools.product('01', repeat=counter_length))))
+        digits = list(map(''.join, list(itertools.product('01', repeat=counter_length))))
 
-        bin_counter = {
-            curr: incr
-            for curr, incr in zip(digits, (digits[1:] + [digits[0]]))
-        }
+        bin_counter = {curr: incr for curr,incr in zip(digits, (digits[1:] + [digits[0]]))}
 
         # We don't want last index to be something like '1111' -> '0000',
         # Instead we want something like '1111' -> '1111' (i.e. remain at last position)
@@ -115,25 +95,16 @@ class Spectral_Bloom_Filter:
 
         return bin_counter
 
-    def create_hashes(self, token: str, hashes: int, max_length: int) -> list:
+    def create_hashes(self, token:str, hashes:int, max_length:int) -> list:
         """
         Get the hased indices for the string
         """
-        return [
-            mmh3_hash(key=token, seed=index, signed=False) % max_length
-            for index in range(hashes)
-        ]
+        return [mmh3_hash(key=token, seed=index, signed=False)%max_length for index in range(hashes)]
 
-    def create_filter(self,
-                      tokens: list,
-                      length: int,
-                      chunk_size: int = 4,
-                      no_hashes: int = 5,
-                      method: str = "minimum") -> bitarray:
+    def create_filter(self, tokens:list, length:int, chunk_size:int=4, no_hashes:int=5, method:str="minimum", to_bitarray:bool=True, bitarray_path:str="document.bin") -> bitarray:
         bin_arr = self.initialize_string(length)
 
-        counter = list(
-            self.gen_counter_chunks(bin_arr, chunk_size, drop_remaining=True))
+        counter = list(self.gen_counter_chunks(bin_arr, chunk_size, drop_remaining=True))
         bin_incr = self.init_counter(chunk_size)
 
         counter_size = len(counter)
@@ -144,7 +115,7 @@ class Spectral_Bloom_Filter:
 
             values_indices = [counter[i] for i in hashed_indices]
             min_val = min(values_indices)
-
+            
             if method == "minimum":
                 # increment counter at hashed_indices
                 # USING MINIMUM INCREMENT
@@ -153,12 +124,15 @@ class Spectral_Bloom_Filter:
                         counter[index] = bin_incr[counter[index]]
                 # print(token, hashed_indices, counter, min_val, values_indices)
 
-        print("Size of the filter is: {} bytes".format(
-            getsizeof(''.join(counter))))
+        print("Size of the filter is: {} bytes".format(getsizeof(''.join(counter))))
 
-        return counter
+        if to_bitarray == True:
+            arr = bitarray.bitarray("".join(counter))
+            arr.tofile(open(bitarray_path, 'wb'))
+        else:
+            return counter
 
-    def optimal_m_k(self, n: int, p: int, chunk_size: int) -> tuple:
+    def optimal_m_k(self, n:int, p:int) -> tuple:
         """
         From: https://stackoverflow.com/questions/658439/how-many-hash-functions-does-my-bloom-filter-need
 
@@ -169,10 +143,9 @@ class Spectral_Bloom_Filter:
         Returns: m - number of bits needed in the bloom filter
                  k - number of hash functions we should apply
         """
-        m = (-n * math.log(p) / (math.log(2)**2))
-        k = (m / n) * math.log(2)
-        return (int(m) * chunk_size, int(k))
-
+        m = (-n*math.log(p) / (math.log(2)**2))
+        k = (m/n)*math.log(2)
+        return (int(m), int(k))
 
 if __name__ == "__main__":
     #logging
@@ -181,24 +154,30 @@ if __name__ == "__main__":
 
     formatter = logging.Formatter(
         '%(asctime)s: %(name)s :- %(levelname)s: \n%(message)s',
-        datefmt='%m/%d/%Y %I:%M:%S %p')
+        datefmt='%m/%d/%Y %I:%M:%S %p'
+    )
 
     file_handler = logging.FileHandler('bloomfilter.log')
     file_handler.setFormatter(formatter)
 
     logger.addHandler(file_handler)
 
+    import parse
+    FILE = "Algorithms interviews  theory vs. practice.html"
+
     spectral = Spectral_Bloom_Filter()
+    chunks = parse.extract_html_bs4(FILE)
+    print(c)
 
     chunk_size = 4
-    no_items = 6
-    false_positive = 0.001
+    no_items = len(chunks)
+    false_positive = 0.1
 
-    # logger.info( "\tNo_of_words:{} Count_array_size:{} No_of_hashes:{} ,\n\terror_rate:{}".format(n, m , hashes.k,error_rate) )
-
-    m, k = spectral.optimal_m_k(no_items, false_positive, chunk_size)
+    m, k = spectral.optimal_m_k(no_items, false_positive)
     print(m, k)
-    print(
-        spectral.create_filter(
-            "hello world this is parth parikh! hello".split(" "), m,
-            chunk_size, k))
+
+    h = Hash_Funcs(k,m)
+    h.check_hashes(chunks)   
+    logger.info( "\tNo_of_words:{} Count_array_size:{} No_of_hashes:{} ,\n\terror_rate:{}".format(no_items, m, k,false_positive))
+
+    print(spectral.create_filter(chunks, m, chunk_size, k))
