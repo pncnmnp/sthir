@@ -8,7 +8,8 @@ from nltk.tokenize import RegexpTokenizer
 import urllib
 from bs4 import BeautifulSoup
 
-def extract_html_bs4(html_file_path:str, remove_stopwords:bool=True):
+
+def extract_html_bs4(html_file_path: str, remove_stopwords: bool = True):
     """
     Given a path to html file it will extract all text in it and return a list of words
     (using library: BeautifulSoup4)
@@ -21,13 +22,13 @@ def extract_html_bs4(html_file_path:str, remove_stopwords:bool=True):
     :rtype: List[str]
     """
     # Following: https://stackoverflow.com/questions/328356/extracting-text-from-html-file-using-python
-    # By PeYoTlL 
+    # By PeYoTlL
     not_allowed_chars = set(string.punctuation)
     invalid_words = set(stopwords.words("english") + ['', ""])
 
     with open(html_file_path) as html_file:
         soup = BeautifulSoup(html_file, features="lxml")
-    
+
     for script in soup(["script", "style"]):
         script.extract()
 
@@ -45,14 +46,17 @@ def extract_html_bs4(html_file_path:str, remove_stopwords:bool=True):
 
     # Remove stopwords
     if remove_stopwords:
-        chunks = [chunk for chunk in chunks if chunk not in list(invalid_words)]
-    
+        chunks = [
+            chunk for chunk in chunks if chunk not in list(invalid_words)
+        ]
+
     return chunks
-    
+
+
 def extract_html_newspaper(html_file_path: str,
-                 author=False,
-                 title=False,
-                 remove_stopwords=True) -> List[str]:
+                           author=False,
+                           title=False,
+                           remove_stopwords=True) -> List[str]:
     """
     Given a path to html file it will extract all text in it and return a list of words
     (using library: Newspaper3k)
@@ -96,6 +100,7 @@ def extract_html_newspaper(html_file_path: str,
     # Tokenize
     words = word_tokenize(text)
     return words
+
 
 if __name__ == "__main__":
     FILE = "tale-of-ten-monkeys.html"
