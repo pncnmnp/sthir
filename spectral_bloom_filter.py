@@ -1,4 +1,50 @@
+from typing import *
+from sys import getsizeof
+
+import bitarray
+from mmh3 import hash as mmh3_hash
+import itertools
+import math
+import logging
+
+class Hash_Funcs:
+    def __init__( self, k:int, m:int):
+        """
+        Creates optimal number of hash functions given m and n
+            m - size of counter array
+        """
+        self.k = k
+        self.hash_funcs_list = []
+        for i in range(self.k):
+            self.hash_funcs_list.append( lambda x,s : mmh3_hash( x , seed = s, signed=False) % m )
+
+    def get_hashes(self, word:str )->list:
+        """Returns a list of k hashed indices for the input word"""
+        return [ self.hash_funcs_list[i](word , i) for i in range(self.k)]
+
+    def check_hashes(self , word_list:list):
+        """Logs the duplicate hashed indices for words in words_list"""
+        faulty_words = set()
+        for w in word_list:
+            indices = self.get_hashes(w)
+            res = hash_funcs.check_duplicates(indices)
+            if res and res[1] not in faulty_words:
+                faulty_words.add(res[1])
+                logger.warning('\tWord:{} \n\tIndices:{} \n\tRepeated:{}'.format(w , indices, res[1] ) )
+
+    @staticmethod
+    def check_duplicates(indices_list:list):
+        seen = set()
+        for item in indices_list:
+            if item in seen:  return True , item
+            seen.add(item)
+        return False
+
 class Spectral_Bloom_Filter:
+    # k - no of hash functions
+    # m - size of bit array
+    # n - no of words in the document
+
     def __init__(self,error_rate:float=0.01):
         self.error_rate = error_rate
 
@@ -97,11 +143,28 @@ class Spectral_Bloom_Filter:
         return (int(m)*chunk_size, int(k))
 
 if __name__ == "__main__":
+    #logging
+    logger = logging.getLogger(name='SBF')
+    logger.setLevel(logging.DEBUG)
+
+    formatter = logging.Formatter(
+        '%(asctime)s: %(name)s :- %(levelname)s: \n%(message)s',
+        datefmt='%m/%d/%Y %I:%M:%S %p'
+    )
+
+    file_handler = logging.FileHandler('bloomfilter.log')
+    file_handler.setFormatter(formatter)
+
+    logger.addHandler(file_handler)
+
+
     spectral = Spectral_Bloom_Filter()
 
     chunk_size = 4
     no_items = 6
     false_positive = 0.001
+
+    # logger.info( "\tNo_of_words:{} Count_array_size:{} No_of_hashes:{} ,\n\terror_rate:{}".format(n, m , hashes.k,error_rate) )
 
     m, k = spectral.optimal_m_k(no_items, false_positive, chunk_size)
     print(m, k)
