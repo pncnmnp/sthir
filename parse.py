@@ -3,13 +3,59 @@ from typing import *
 import string
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
+from nltk.tokenize import RegexpTokenizer
 
-def extract_html(html_file_path: str,
+import urllib
+from bs4 import BeautifulSoup
+
+def extract_html_bs4(html_file_path:str, remove_stopwords:bool=True):
+    """
+    Given a path to html file it will extract all text in it and return a list of words
+    (using library: BeautifulSoup4)
+
+    :param html_file_path: Path to html file, will be called with open()
+    :type html_file_path: str
+    :param remove_stopwords: Will remove stopwords like ["the", "them",etc], defaults to False
+    :type remove_stopwords: bool, optional
+    :return: A list of words all in lowercase
+    :rtype: List[str]
+    """
+    # Following: https://stackoverflow.com/questions/328356/extracting-text-from-html-file-using-python
+    # By PeYoTlL 
+    not_allowed_chars = set(string.punctuation)
+    invalid_words = set(stopwords.words("english") + ['', ""])
+
+    with open(html_file_path) as html_file:
+        soup = BeautifulSoup(html_file, features="lxml")
+    
+    for script in soup(["script", "style"]):
+        script.extract()
+
+    text = soup.get_text()
+
+    # Extracting lines
+    lines = [line.strip() for line in text.splitlines()]
+
+    # Tokenizing words
+    tokenizer = RegexpTokenizer(r'\w+')
+    chunks = [tokenizer.tokenize(line.lower()) for line in lines]
+
+    # Flatten
+    chunks = sum(chunks, [])
+
+    # Remove stopwords
+    if remove_stopwords:
+        chunks = [chunk for chunk in chunks if chunk not in list(invalid_words)]
+    
+    return chunks
+    
+def extract_html_newspaper(html_file_path: str,
                  author=False,
                  title=False,
-                 remove_stopwords=False) -> List[str]:
+                 remove_stopwords=True) -> List[str]:
     """
-    Given a path to html, file it will extract all text in it and return a list of words
+    Given a path to html file it will extract all text in it and return a list of words
+    (using library: Newspaper3k)
 
     :param html_file_path: Path to html file, will be called with open()
     :type html_file_path: str
@@ -50,3 +96,7 @@ def extract_html(html_file_path: str,
     # Tokenize
     words = word_tokenize(text)
     return words
+
+if __name__ == "__main__":
+    FILE = "tale-of-ten-monkeys.html"
+    print(extract_html_newspaper(FILE))
