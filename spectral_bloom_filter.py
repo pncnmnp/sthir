@@ -30,28 +30,34 @@ class Hash_Funcs:
             res = hash_funcs.check_duplicates(indices)
             if res and res[1] not in faulty_words:
                 faulty_words.add(res[1])
-                logger.warning('\tWord:{} \n\tIndices:{} \n\tRepeated:{}'.format(w , indices, res[1] ) )
+                logger.warning(
+                    '\tWord:{} \n\tIndices:{} \n\tRepeated:{}'.format(
+                        w, indices, res[1]))
 
     @staticmethod
-    def check_duplicates(indices_list:list):
+    def check_duplicates(indices_list: list):
         seen = set()
         for item in indices_list:
-            if item in seen:  return True , item
+            if item in seen: return True, item
             seen.add(item)
         return False
+
 
 class Spectral_Bloom_Filter:
     # k - no of hash functions
     # m - size of bit array
     # n - no of words in the document
 
-    def __init__(self,error_rate:float=0.01):
+    def __init__(self, error_rate: float = 0.01):
         self.error_rate = error_rate
 
-    def initialize_string(self, length:int):
-        return ('0'*length)
+    def initialize_string(self, length: int):
+        return ('0' * length)
 
-    def gen_counter_chunks(self, string: str, chunk_size:int, drop_remaining:bool=False) -> Iterable[str]: 
+    def gen_counter_chunks(self,
+                           string: str,
+                           chunk_size: int,
+                           drop_remaining: bool = False) -> Iterator[str]:
         """
         Yields an iterator of chunks of specified size
 
@@ -60,6 +66,15 @@ class Spectral_Bloom_Filter:
 
         >>> list(gen_counter_chunks('123456789A', 4)) == ['1234', '5678', '9A']
         >>> list(gen_counter_chunks('123456789A', 4, drop_remaining = True)) == ['1234', '5678']
+
+        :param string: The string to chunk
+        :type string: str
+        :param chunk_size: Size of individual chunk, the string will split in 
+        :type chunk_size: int
+        :param drop_remaining: Remove final chunks of invalid length, defaults to False
+        :type drop_remaining: bool, optional
+        :yield: A chunk of string of specified size
+        :rtype: Iterator[str]
         """
         string_length = len(string)
 
