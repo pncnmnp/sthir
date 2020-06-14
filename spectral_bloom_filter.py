@@ -101,21 +101,20 @@ class Spectral_Bloom_Filter:
         """
         return [mmh3_hash(key=token, seed=index, signed=False)%max_length for index in range(hashes)]
 
-    def create_filter(self, tokens:list, length:int, chunk_size:int=4, no_hashes:int=5, method:str="minimum", to_bitarray:bool=True, bitarray_path:str="document.bin") -> bitarray:
-        bin_arr = self.initialize_string(length)
+    def create_filter(self, tokens:list, m:int, chunk_size:int=4, no_hashes:int=5, method:str="minimum", to_bitarray:bool=True, bitarray_path:str="document.bin") -> bitarray:
+        bin_arr = self.initialize_string(m*chunk_size)
 
         counter = list(self.gen_counter_chunks(bin_arr, chunk_size, drop_remaining=True))
         bin_incr = self.init_counter(chunk_size)
 
-        counter_size = len(counter)
-        hash_funcs = Hash_Funcs(k=no_hashes, m=counter_size)
+        hash_funcs = Hash_Funcs(k=no_hashes, m=m)
 
         for token in tokens:
             hashed_indices = hash_funcs.get_hashes(token)
 
             values_indices = [counter[i] for i in hashed_indices]
             min_val = min(values_indices)
-            
+
             if method == "minimum":
                 # increment counter at hashed_indices
                 # USING MINIMUM INCREMENT
@@ -125,6 +124,7 @@ class Spectral_Bloom_Filter:
                 # print(token, hashed_indices, counter, min_val, values_indices)
 
         print("Size of the filter is: {} bytes".format(getsizeof(''.join(counter))))
+        # print("".join(counter))
 
         if to_bitarray == True:
             arr = bitarray.bitarray("".join(counter))
@@ -145,7 +145,7 @@ class Spectral_Bloom_Filter:
         """
         m = (-n*math.log(p) / (math.log(2)**2))
         k = (m/n)*math.log(2)
-        return (int(m), int(k))
+        return (math.ceil(m), round(k))
 
 if __name__ == "__main__":
     #logging
@@ -166,18 +166,17 @@ if __name__ == "__main__":
     FILE = "Algorithms interviews  theory vs. practice.html"
 
     spectral = Spectral_Bloom_Filter()
-    chunks = parse.extract_html_bs4(FILE)
-    print(c)
+    tokens = parse.extract_html_bs4(FILE)
 
     chunk_size = 4
-    no_items = len(chunks)
+    no_items = len(tokens)
     false_positive = 0.1
 
     m, k = spectral.optimal_m_k(no_items, false_positive)
-    print(m, k)
+    print(m, k, no_items)
 
     h = Hash_Funcs(k,m)
-    h.check_hashes(chunks)   
+    h.check_hashes(tokens)   
     logger.info( "\tNo_of_words:{} Count_array_size:{} No_of_hashes:{} ,\n\terror_rate:{}".format(no_items, m, k,false_positive))
 
-    print(spectral.create_filter(chunks, m, chunk_size, k))
+    print(spectral.create_filter(tokens, m, chunk_size, k))
