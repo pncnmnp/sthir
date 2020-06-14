@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+</head>
+
+<body>
+
+	<script>
+		function assert(condition, message) {
+			if (!condition) {
+				throw message || "Assertion failed";
+			}
+		}
+		function base2p15_decode(base2p15) {
+			let bit_string = "";
+			let offset = 0xa1;
+			let padding = parseInt(base2p15[0], 16);
+			for (let character of base2p15.slice(1, -1)) {
+				character = character.charCodeAt() - offset;
+				let bits = character.toString(2).padStart(15, "0");
+				bit_string += bits;
+			}
+
+			let character = base2p15.slice(-1).charCodeAt() - offset;
+			let bits = character.toString(2).padStart(15, "0").slice(0, 15 - padding);
+			bit_string += bits;
+			return bit_string;
+		}
+		function base2p15_get_range(base2p15, start, end) {
+			assert(start < end, "Start should be less than end");
+			assert(start >= 0, "Start must be positive");
+			assert(end < ((base2p15.length - 1) * 15 - parseInt(base2p15[0], 16) + 1), "End out of range!");
+			let range_str = base2p15.slice(1).slice(start / 15, (end / 15) + 1);
+			let end_pad = (15 - end % 2).toString(16);
+			let start_pad = start % 15;
+			let decoded = base2p15_decode(end_pad + range_str).slice(start_pad);
+			return decoded;
+		}
+	</script>
+</body>
+
+</html>
