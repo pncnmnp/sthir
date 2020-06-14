@@ -1,48 +1,69 @@
-from bitarray import bitarray
 import base64
+from typing import Iterable
 
-HTML_TEMPLATE = {
-    "HEAD":
+
+def gen_chunks(string: str,
+               chunk_size: int,
+               drop_remaining: bool = False) -> Iterable[str]:
     """
-        <!DOCTYPE html>
-        <html lang="en">
+    Yields an iterator of chunks of specified size
 
-        <head>
-            <meta charset="UTF-8">
-        </head>
+    If drop_remaining is specified, the iterator is guaranteed to have  
+    all chunks of same size.
 
-        <body>
-            <pre id="demo"></pre>
-            <script>
-                function get_bit_array(base64) {
-                    let bit_array = [];
-                    for (let unicode_char of atob(base64)) {
-                        let num = unicode_char.charCodeAt();
-                        for (let i = 0; i < 8; i++) {
-                            let bit = (num & 0x80) >> 7;
-                            bit_array.push(Boolean(bit));
-                            num <<= 1;
-                        }
-                    }
-                    return bit_array;
-                }
-                let demo = document.getElementById("demo");
-        """,
-    "TAIL":
+    >>> list(gen_counter_chunks('123456789A', 4)) == ['1234', '5678', '9A']
+    >>> list(gen_counter_chunks('123456789A', 4, drop_remaining = True)) == ['1234', '5678']
     """
-            let bit_arr = get_bit_array("{}");
-            demo.innerHTML = bit_arr.toString();
-            </script>
-        </body>
-        </html>
-        """
-}
-if __name__ == "__main__":
-    bit_arr = bitarray()
-    with open("document.bin", "rb") as f:
-        bit_arr.fromfile(f)
-    print(len(bit_arr))
-    b64 = base64.b64encode(bit_arr.tobytes())
-    with open("output.html","w") as f:
-        f.write(HTML_TEMPLATE["HEAD"])
-        f.write(HTML_TEMPLATE["TAIL"].format(b64.decode()))
+    string_length = len(string)
+
+    # If drop remaining is True, trim the string
+    if drop_remaining and string_length % chunk_size != 0:
+        closest_multiple = string_length - string_length % chunk_size
+        string = string[:closest_multiple]
+
+    for c in range(0, len(string), chunk_size):
+        yield string[c:c + chunk_size]
+
+
+def base2p15_encode(bit_string: str) -> str:
+    base2p15 = ""
+    offset = 0xa1
+
+    # Padding bit_string if not multiple of 15
+    padding_bits = (15 - len(bit_string) % 15) % 15
+    bit_string += "0" * padding_bits
+    base2p15 += hex(padding_bits)[2:]
+
+    assert len(bit_string) % 15 == 0
+    # Encode remaining data
+    for chunk in gen_chunks(bit_string, 15):
+        character = chr(int(chunk, 2) + offset)
+        base2p15 += character
+
+    return base2p15
+
+
+def base2p15_decode(base2p15: str) -> str:
+    bit_string = ""
+    offset = 0xa1
+    padding = int(base2p15[0], 16)
+    for character in base2p15[1:-1]:
+        character = ord(character) - offset
+        bits = bin(character)[2:].zfill(15)
+        bit_string += bits
+
+    character = ord(base2p15[-1]) - offset
+    bits = bin(character)[2:].zfill(15)[:15 - padding]
+    bit_string += bits
+    return bit_string
+
+
+def base2p15_get_range(base2p15: str, start: int, end: int) -> str:
+    assert start < end
+    assert start >= 0
+    assert end < (len(base2p15) - 1) * 15 - int(base2p15[0], 16) + 1
+    range_str = base2p15[1:][start // 15:(end // 15) + 1]
+    end_pad = hex(15 - end % 15)[2:]
+    start_pad = start % 15
+    d = base2p15_decode(end_pad + range_str)[start_pad:]
+    return d
