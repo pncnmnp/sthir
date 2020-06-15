@@ -111,4 +111,4 @@ def extract_html_newspaper(html_file_path: str,
 
 if __name__ == "__main__":
     FILE = r"Testing\Algorithms interviews_ theory vs. practice.html"
-    print(extract_html_bs4(FILE)[:20])
+    # print(extract_html_bs4(FILE)[:20])

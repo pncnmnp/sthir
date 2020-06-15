@@ -1,4 +1,4 @@
-from typing import *
+from typing import List , Iterable
 from sys import getsizeof
 
 import bitarray
@@ -173,10 +173,10 @@ if __name__ == "__main__":
     false_positive = 0.1
 
     m, k = spectral.optimal_m_k(no_items, false_positive)
-    print(m, k, no_items)
+    # print(m, k, no_items)
 
     h = Hash_Funcs(k,m)
     h.check_hashes(tokens)   
     logger.info( "\tNo_of_words:{} Count_array_size:{} No_of_hashes:{} ,\n\terror_rate:{}".format(no_items, m, k,false_positive))
 
-    print(spectral.create_filter(tokens, m, chunk_size, k))
+    # print(spectral.create_filter(tokens, m, chunk_size, k))
