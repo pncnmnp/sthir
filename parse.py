@@ -4,12 +4,14 @@ import string
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.tokenize import RegexpTokenizer
+from nltk.stem import WordNetLemmatizer 
+
 
 import urllib
 from bs4 import BeautifulSoup
 
 
-def extract_html_bs4(html_file_path: str, remove_stopwords: bool = True):
+def extract_html_bs4(html_file_path: str, remove_stopwords: bool = True,enable_lemmetization:bool=False):
     """
     Given a path to html file it will extract all text in it and return a list of words
     (using library: BeautifulSoup4)
@@ -26,7 +28,7 @@ def extract_html_bs4(html_file_path: str, remove_stopwords: bool = True):
     not_allowed_chars = set(string.punctuation)
     invalid_words = set(stopwords.words("english") + ['', ""])
 
-    with open(html_file_path) as html_file:
+    with open(html_file_path , encoding='utf8') as html_file:
         soup = BeautifulSoup(html_file, features="lxml")
 
     for script in soup(["script", "style"]):
@@ -49,6 +51,11 @@ def extract_html_bs4(html_file_path: str, remove_stopwords: bool = True):
         chunks = [
             chunk for chunk in chunks if chunk not in list(invalid_words)
         ]
+
+    #Lemmatization   
+    if enable_lemmetization:
+        lemmatizer = WordNetLemmatizer() 
+        chunks = [ lemmatizer.lemmatize(chunk) for chunk in chunks ]
 
     return chunks
 
@@ -77,7 +84,7 @@ def extract_html_newspaper(html_file_path: str,
 
     # Read html
     article = newspaper.Article(url="")
-    with open(html_file_path) as html_file:
+    with open(html_file_path, encoding='utf8') as html_file:
         article.set_html(html_file.read())
     article.parse()
     text = article.text
@@ -103,5 +110,5 @@ def extract_html_newspaper(html_file_path: str,
 
 
 if __name__ == "__main__":
-    FILE = "tale-of-ten-monkeys.html"
-    print(extract_html_newspaper(FILE))
+    FILE = r"Testing\Algorithms interviews_ theory vs. practice.html"
+    print(extract_html_bs4(FILE)[:20])
