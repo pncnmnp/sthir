@@ -5,6 +5,7 @@ import base64
 import glob
 from bitarray import bitarray
 from generate_search import base2p15_encode
+import lxml.html
 
 def get_all_html_files(directory):
     return glob.glob("./*.html")
@@ -16,6 +17,8 @@ def generate_bloom_filter(file, false_positive=0.1, chunk_size=4):
     spectral = spectral_bloom_filter.Spectral_Bloom_Filter()
     tokens = parse.extract_html_bs4(file)
 
+    title = lxml.html.parse(file).find(".//title").text
+
     no_items = len(tokens)
     m, k = spectral.optimal_m_k(no_items, false_positive)
     spectral.create_filter(tokens, m, 
@@ -26,7 +29,8 @@ def generate_bloom_filter(file, false_positive=0.1, chunk_size=4):
         "m": m,
         "k": k,
         "chunk_size": chunk_size,
-        "bin_file": file.replace(".html", ".bin")
+        "bin_file": file.replace(".html", ".bin"),
+        "title": title
     }
 
 def create_search_page(directory):
@@ -44,7 +48,7 @@ def create_search_page(directory):
         base2p15_arrs.append([base2p15_encode(bit_arr.to01()), 
                                 document["chunk_size"], 
                                 document["m"], 
-                                document["k"], document["bin_file"]])
+                                document["k"], document["bin_file"], document["title"]])
         print("Scanned: {}".format(document["bin_file"]))
 
     with open("output_2p15.html", "w") as f:
