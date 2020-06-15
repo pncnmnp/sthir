@@ -101,7 +101,7 @@ class Tester:
 
             
         self.logger.warning( 
-            "\tTheoretical error_probability: {}\n:".format( 0.5 ** self.k ) +
+            "\tTheoretical error_probability: {}\n".format( 0.5 ** self.k ) +
             "\tTotal no unseen words: {}\n".format( no_of_unseen_words ) +
             "\tNo of false_postives found: {}\n".format(fp_count)  +
             "\tFP_count / No_of_unseen_words: {}".format(fp_count / no_of_unseen_words)    
@@ -113,7 +113,7 @@ if __name__ == "__main__":
     #Keep the html file in ./Testing/
     file_name = r"Algorithms interviews_ theory vs. practice.html"
 
-    test_obj = Tester(file_name , chunk_size= 4 , fp_rate= 0.01)
-    test_obj.generate_Filter( True, True )
+    test_obj = Tester(file_name , chunk_size= 4 , fp_rate= 0.1)
+    test_obj.generate_Filter( True, False )
     test_obj.test_filter_for_FP()
 
