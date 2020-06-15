@@ -7,7 +7,7 @@ from nltk.stem import WordNetLemmatizer
 """"
 Step1: Add your html file to Testing.py
 Step2: Create a Tester object by passing your filename and parameters
-Step3: Call the generate_Filter() method
+Step3: Call the generate_Filter() method 
 Step4: Call test_filter() method
 Step5: Check ./Testing/bloomfilter.log
 """
@@ -54,7 +54,7 @@ class Tester:
         self.m, self.k = self.spectral.optimal_m_k(self.n, self.fp_rate)
         
         self.logger.info( 
-            "\tNo_of_words:{} Count_array_size:{} No_of_hashes:{} ,\n\terror_rate:{}".format(self.n, self.m, self.k,self.fp_rate)
+            "\tNo_of_words:{} Count_array_size:{} No_of_hashes:{} \n\terror_rate:{} ".format(self.n, self.m, self.k, self.fp_rate)
         )
 
         self.counter =  self.spectral.create_filter( self.tokens, self.m, self.chunk_size, self.k,
@@ -67,7 +67,7 @@ class Tester:
         f = open(r"Testing\english_dict.txt",'r')
         l = f.readlines()
         l = [ word.strip() for word in l]
-        if self.lemmetize:
+        if self.lemmetize: 
             lemmatizer = WordNetLemmatizer() 
             l = [ lemmatizer.lemmatize(word) for word in l ]
         return l
@@ -84,6 +84,8 @@ class Tester:
 
         fp_count , no_of_unseen_words = 0 , 0
 
+        wrong_count , seen_words = 0 , 0
+
         #Loop that iterates through the testing_words
         for word in testing_words:
 
@@ -91,20 +93,26 @@ class Tester:
             hashed_indices = hash_funcs.get_hashes(word)
             values = [ int(self.counter[i],2) for i in hashed_indices]
             SBF_ans = min(values) #Filter's prediction
+            current_count = word_counts[word]
 
-            if word_counts[word] == 0:
-                # word is absent in the filter
+            if current_count == 0:                  # word is absent in the filter
                 no_of_unseen_words += 1
-                if SBF_ans != 0: fp_count += 1  #It is a false postive
-            else:
-                pass
+                if SBF_ans != 0: fp_count += 1      #It is a false postive
+            else:                                   #word was inserted
+                seen_words += 1
+                if SBF_ans != current_count:
+                    wrong_count += 1 
 
             
         self.logger.warning( 
+            "\tNo of words in word-dictionary: {}\n".format( no_of_words ) +
+            "\tNo of unseen words in dictionary: {}\n".format( no_of_unseen_words ) +
+            "\tFalse postives found: {}\n".format(fp_count)  +
+            "\tFP_count / No_of_unseen_words: {}\n".format(fp_count / no_of_unseen_words) +   
+            "\tNo of inserted words found in dictionary: {}\n".format(seen_words) +
+            "\tWrong word counts: {}\n".format( wrong_count) + 
             "\tTheoretical error_probability: {}\n".format( 0.5 ** self.k ) +
-            "\tTotal no unseen words: {}\n".format( no_of_unseen_words ) +
-            "\tNo of false_postives found: {}\n".format(fp_count)  +
-            "\tFP_count / No_of_unseen_words: {}".format(fp_count / no_of_unseen_words)    
+            "\tTotal Error: {}\n".format( (fp_count+wrong_count) / no_of_words )  
         )
 
 
