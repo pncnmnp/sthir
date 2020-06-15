@@ -113,6 +113,7 @@ HTML_TEMPLATE = {
                     for (var document=0; document<documents.length; document++) {
                         bit_arrs.push(new bitArray(documents[document][0], documents[document][1], documents[document][2], documents[document][3]));
                         urls.push(documents[document][4].replace(".bin", ".html"));
+                        titles.push(documents[document][5]);
                     }
                     return bit_arrs;
                 }
@@ -120,7 +121,10 @@ HTML_TEMPLATE = {
                 function get_all_scores(doc_objs, words) {
                     let scores = [];
                     for (var i = 0; i < doc_objs.length; i++) {
-                        scores.push([doc_objs[i].get_document_score(words, true), urls[i]]);
+                        let score = doc_objs[i].get_document_score(words, true);
+                        if (score > 0) {
+                            scores.push([score, titles[i], urls[i]]);
+                        }
                     }
                     return scores.sort((a, b) => b[0]-a[0]);
                 }
@@ -129,7 +133,7 @@ HTML_TEMPLATE = {
                     let vals = document.getElementById('link_id').value.toLowerCase().split(" ");
                     let scores = get_all_scores(bit_arrs, vals);
                     for(var i = 0; i < scores.length; i++) {
-                        let temp = "<a href=" + String(scores[i][1]) + ">" + scores[i][1] + "</a>";
+                        let temp = "<a href=" + String(scores[i][2]) + ">" + scores[i][1] + "</a>";
                         scores[i] = temp;
                     }
                     document.getElementById("search").innerHTML="<br>"+scores.join("<br>");
@@ -141,6 +145,7 @@ HTML_TEMPLATE = {
             documents = {};
             let bit_arrs = [];
             let urls = [];
+            let titles = [];
             get_document_object(documents);
             delete documents;
             // console.log(bit_arr.get_range(0, 50));
@@ -161,12 +166,6 @@ if __name__ == "__main__":
                                 document[1], 
                                 document[2], 
                                 document[3], document[0]])
-
-    # print("Bits:", len(bit_arr))
-    # b64 = base2p15_encode(bit_arr.to01())
-    # print("My:", len(b64))
-    # b64 = base64.b64encode(bit_arr.tobytes())
-    # print("B64:", len(b64))
 
     with open("output_2p15.html", "w") as f:
         f.write(HTML_TEMPLATE["HEAD"])
