@@ -107,27 +107,54 @@ HTML_TEMPLATE = {
                     }
                 }
 
-                let demo = document.getElementById("demo");
+                function get_document_object(documents) {
+                    for (var document=0; document<documents.length; document++) {
+                        bit_arrs.push(new bitArray(documents[document][0], documents[document][1], documents[document][2], documents[document][3]));
+                        urls.push(documents[document][4].replace(".bin", ".html"));
+                    }
+                    delete documents;
+                    return bit_arrs;
+                }
+
+                function get_all_scores(doc_objs, words) {
+                    let scores = [];
+                    for (var i = 0; i < doc_objs.length; i++) {
+                        scores.push([doc_objs[i].get_document_score(words, true), urls[i]]);
+                    }
+                    return scores.sort((a, b) => b[0]-a[0]);
+                }
+               // let demo = document.getElementById("demo");
         """,
     "TAIL":
-    """
-            let bit_arr = new bitArray("{}", 4, 14474, 3);
+    """     
+            let documents = {};
+            let bit_arrs = [];
+            let urls = [];
             // console.log(bit_arr.get_range(0, 50));
-            demo.innerHTML = bit_arr.bit_array;
+            // demo.innerHTML = bit_arr.bit_array;
             </script>
         </body>
         </html>
         """
 }
 if __name__ == "__main__":
-    bit_arr = bitarray()
-    with open("document.bin", "rb") as f:
-        bit_arr.fromfile(f)
-    print("Bits:", len(bit_arr))
-    b64 = base2p15_encode(bit_arr.to01())
-    print("My:", len(b64))
-    b64 = base64.b64encode(bit_arr.tobytes())
-    print("B64:", len(b64))
+    base2p15_arrs = list()
+    documents = [["document.bin", 4, 14474, 3], ["A simple way to get more value from metrics.bin", 4, 11086, 3]]
+    for document in documents:
+        bit_arr = bitarray()
+        with open(document[0], "rb") as f:
+            bit_arr.fromfile(f)
+        base2p15_arrs.append([base2p15_encode(bit_arr.to01()), 
+                                document[1], 
+                                document[2], 
+                                document[3], document[0]])
+
+    # print("Bits:", len(bit_arr))
+    # b64 = base2p15_encode(bit_arr.to01())
+    # print("My:", len(b64))
+    # b64 = base64.b64encode(bit_arr.tobytes())
+    # print("B64:", len(b64))
+
     with open("output_2p15.html", "w") as f:
         f.write(HTML_TEMPLATE["HEAD"])
-        f.write(HTML_TEMPLATE["TAIL"].format(base2p15_encode(bit_arr.to01())))
+        f.write(HTML_TEMPLATE["TAIL"].format(base2p15_arrs))
