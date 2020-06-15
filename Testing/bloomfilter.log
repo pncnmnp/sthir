@@ -1,0 +1,31 @@
+06/15/2020 04:39:47 PM: SBF :- INFO: 
+	No_of_words:3020 Count_array_size:28947 No_of_hashes:7 ,
+	error_rate:0.01
+06/15/2020 04:39:48 PM: SBF :- WARNING: 
+	Total no unseen words: 18593
+	No of false_postives found: 1
+	FP_count / No_of_unseen_words: 5.378368203087183e-05
+06/15/2020 05:05:24 PM: SBF :- INFO: 
+	No_of_words:3020 Count_array_size:28947 No_of_hashes:7 ,
+	error_rate:0.01
+06/15/2020 05:05:24 PM: SBF :- WARNING: 
+	Theoretical error_probability: 0.0078125
+:	Total no unseen words: 18593
+	No of false_postives found: 1
+	FP_count / No_of_unseen_words: 5.378368203087183e-05
+06/15/2020 05:07:23 PM: SBF :- INFO: 
+	No_of_words:3020 Count_array_size:28947 No_of_hashes:7 ,
+	error_rate:0.01
+06/15/2020 05:07:23 PM: SBF :- WARNING: 
+	Theoretical error_probability: 0.009999316953675456
+:	Total no unseen words: 18593
+	No of false_postives found: 1
+	FP_count / No_of_unseen_words: 5.378368203087183e-05
+06/15/2020 05:17:06 PM: SBF :- INFO: 
+	No_of_words:3020 Count_array_size:28947 No_of_hashes:7 ,
+	error_rate:0.01
+06/15/2020 05:17:07 PM: SBF :- WARNING: 
+	Theoretical error_probability: 0.0078125
+:	Total no unseen words: 18593
+	No of false_postives found: 1
+	FP_count / No_of_unseen_words: 5.378368203087183e-05
