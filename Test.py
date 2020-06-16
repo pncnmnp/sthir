@@ -1,8 +1,15 @@
-import parse
-from spectral_bloom_filter import *
 from collections import Counter
-from typing import Iterable
+
+#To be removed
+from logging import Formatter,FileHandler,getLogger
+from logging import DEBUG 
+
 from nltk.stem import WordNetLemmatizer 
+from parse import extract_html_bs4
+from spectral_bloom_filter import  Spectral_Bloom_Filter , Hash_Funcs
+from typing import Iterable
+
+
 
 """"
 Step1: Add your html file to Testing.py
@@ -15,15 +22,15 @@ Step5: Check ./Testing/bloomfilter.log
 
 def create_logger():
     """Returns a logger object"""
-    logger = logging.getLogger(name='SBF')
-    logger.setLevel(logging.DEBUG)
+    logger = getLogger(name='SBF')
+    logger.setLevel(DEBUG)
 
-    formatter = logging.Formatter(
+    formatter = Formatter(
         '%(asctime)s: %(name)s :- %(levelname)s: \n%(message)s',
         datefmt='%m/%d/%Y %I:%M:%S %p'
     )
 
-    file_handler = logging.FileHandler(r'Testing\bloomfilter.log')
+    file_handler = FileHandler(r'Testing\bloomfilter.log')
     file_handler.setFormatter(formatter)
 
     logger.addHandler(file_handler)
@@ -48,7 +55,7 @@ class Tester:
         self.FILE = "Testing\\" + self.doc_name
 
         self.spectral = Spectral_Bloom_Filter()
-        self.tokens = parse.extract_html_bs4(self.FILE ,remove_stopwords , lemmetize )
+        self.tokens = extract_html_bs4(self.FILE ,remove_stopwords , lemmetize )
 
         self.n = len(self.tokens)
         self.m, self.k = self.spectral.optimal_m_k(self.n, self.fp_rate)

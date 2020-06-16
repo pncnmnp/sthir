@@ -1,23 +1,26 @@
-import spectral_bloom_filter
-import parse
-import convert_2p15
-import base64
-import glob
+
 from bitarray import bitarray
+import convert_2p15
+
 from generate_search import base2p15_encode
-import lxml.html
+from glob import glob
+
+from lxml.html import parse as html_parse
+
+from parse import extract_html_bs4
+from spectral_bloom_filter import Spectral_Bloom_Filter
 
 def get_all_html_files(directory):
-    return glob.glob("./*.html")
+    return glob("./*.html")
 
 def get_all_bin_files(directory):
-    return glob.glob("./*.bin")
+    return glob("./*.bin")
 
 def generate_bloom_filter(file, false_positive=0.1, chunk_size=4):
-    spectral = spectral_bloom_filter.Spectral_Bloom_Filter()
-    tokens = parse.extract_html_bs4(file)
+    spectral = Spectral_Bloom_Filter()
+    tokens = extract_html_bs4(file)
 
-    title = lxml.html.parse(file).find(".//title").text
+    title = html_parse(file).find(".//title").text
 
     no_items = len(tokens)
     m, k = spectral.optimal_m_k(no_items, false_positive)

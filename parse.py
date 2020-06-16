@@ -1,14 +1,15 @@
-import newspaper
-from typing import *
-import string
+
+from bs4 import BeautifulSoup
+from newspaper import Article
+
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.tokenize import RegexpTokenizer
 from nltk.stem import WordNetLemmatizer 
 
+from string import ascii_lowercase,digits
+from typing import Iterable , List
 
-import urllib
-from bs4 import BeautifulSoup
 
 
 def extract_html_bs4(html_file_path: str, remove_stopwords: bool = True,enable_lemmetization:bool=False):
@@ -20,12 +21,13 @@ def extract_html_bs4(html_file_path: str, remove_stopwords: bool = True,enable_l
     :type html_file_path: str
     :param remove_stopwords: Will remove stopwords like ["the", "them",etc], defaults to False
     :type remove_stopwords: bool, optional
+    :param enable_lemmetization: Will lemmetize words if set to True. Ex: cats->cat, defaults to False
+    :type enable_lemmetization: bool, optional
     :return: A list of words all in lowercase
     :rtype: List[str]
     """
     # Following: https://stackoverflow.com/questions/328356/extracting-text-from-html-file-using-python
     # By PeYoTlL
-    not_allowed_chars = set(string.punctuation)
     invalid_words = set(stopwords.words("english") + ['', ""])
 
     with open(html_file_path , encoding='utf8') as html_file:
@@ -79,11 +81,11 @@ def extract_html_newspaper(html_file_path: str,
     :return: A list of words all in lowercase
     :rtype: List[str]
     """
-    allowed_chars = set(string.ascii_lowercase + string.digits + " ")
+    allowed_chars = set(ascii_lowercase + digits + " ")
     invalid_words = set(stopwords.words("english"))
 
     # Read html
-    article = newspaper.Article(url="")
+    article = Article(url="")
     with open(html_file_path, encoding='utf8') as html_file:
         article.set_html(html_file.read())
     article.parse()
@@ -111,4 +113,4 @@ def extract_html_newspaper(html_file_path: str,
 
 if __name__ == "__main__":
     FILE = r"Testing\Algorithms interviews_ theory vs. practice.html"
-    # print(extract_html_bs4(FILE)[:20])
+    print(extract_html_bs4(FILE)[:20])

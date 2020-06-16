@@ -1,5 +1,4 @@
 from bitarray import bitarray
-import base64
 from generate_search import base2p15_encode
 
 HTML_TEMPLATE = {

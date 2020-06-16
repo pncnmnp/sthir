@@ -1,11 +1,17 @@
-from typing import List , Iterable
-from sys import getsizeof
+from bitarray import bitarray
+from itertools import product
 
-import bitarray
+#To be removed
+from logging import Formatter,FileHandler,getLogger
+from logging import DEBUG 
+
 from mmh3 import hash as mmh3_hash
-import itertools
-import math
-import logging
+from math import log , ceil
+
+from sys import getsizeof
+from typing import List , Iterable
+
+
 
 class Hash_Funcs:
     def __init__( self, k:int, m:int):
@@ -84,7 +90,7 @@ class Spectral_Bloom_Filter:
         
         Returns: Dictionary used for binary counter operation
         """
-        digits = list(map(''.join, list(itertools.product('01', repeat=counter_length))))
+        digits = list(map(''.join, list( product('01', repeat=counter_length) )))
 
         bin_counter = {curr: incr for curr,incr in zip(digits, (digits[1:] + [digits[0]]))}
 
@@ -127,7 +133,7 @@ class Spectral_Bloom_Filter:
         # print("".join(counter))
 
         if to_bitarray == True:
-            arr = bitarray.bitarray("".join(counter))
+            arr = bitarray("".join(counter))
             arr.tofile(open(bitarray_path, 'wb'))
         else:
             return counter
@@ -143,21 +149,21 @@ class Spectral_Bloom_Filter:
         Returns: m - number of bits needed in the bloom filter
                  k - number of hash functions we should apply
         """
-        m = (-n*math.log(p) / (math.log(2)**2))
-        k = (m/n)*math.log(2)
-        return (math.ceil(m), round(k))
+        m = (-n*log(p) / (log(2)**2))
+        k = (m/n)*log(2)
+        return ( ceil(m), round(k))
 
 if __name__ == "__main__":
     #logging
-    logger = logging.getLogger(name='SBF')
-    logger.setLevel(logging.DEBUG)
+    logger = getLogger(name='SBF')
+    logger.setLevel(DEBUG)
 
-    formatter = logging.Formatter(
+    formatter = Formatter(
         '%(asctime)s: %(name)s :- %(levelname)s: \n%(message)s',
         datefmt='%m/%d/%Y %I:%M:%S %p'
     )
 
-    file_handler = logging.FileHandler('bloomfilter.log')
+    file_handler = FileHandler('bloomfilter.log')
     file_handler.setFormatter(formatter)
 
     logger.addHandler(file_handler)

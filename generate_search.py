@@ -1,6 +1,4 @@
-import base64
 from typing import Iterable
-
 
 def gen_chunks(string: str,
                chunk_size: int,
