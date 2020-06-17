@@ -16,8 +16,9 @@ class Hash_Funcs:
     def __init__( self, k:int, m:int):
         """
         Creates hash functions given m and k
-            m - size of counter array
-            k - number of hash functions
+
+        :param m: size of counter array
+        :param k: number of hash functions
         """
         self.k = k
         self.hash_funcs_list = []
@@ -25,11 +26,20 @@ class Hash_Funcs:
             self.hash_funcs_list.append( lambda x,s : mmh3_hash( x , seed = s, signed=False) % m )
 
     def get_hashes(self, word:str )->list:
-        """Returns a list of k hashed indices for the input word"""
+        """
+        Returns a list of k hashed indices for the input word
+
+        :param word: Word to be hashed
+        :returns: List of hashes of the word
+        """
         return [ self.hash_funcs_list[i](word , i) for i in range(self.k)]
 
     def check_hashes(self , word_list:list):
-        """Logs the duplicate hashed indices for words in words_list"""
+        """
+        Logs the duplicate hashed indices for words in words_list
+
+        :param word_list: List of words
+        """
         faulty_words = set()
         for w in word_list:
             indices = self.get_hashes(w)
@@ -47,9 +57,12 @@ class Hash_Funcs:
         return False
 
 class Spectral_Bloom_Filter:
-    # k - no of hash functions
-    # m - size of bit array
-    # n - no of words in the document
+    """
+    Creates a Spectral Bloom Filter using the words parsed from the documents
+
+    |  Paper: SIGMOD '03: Proceedings of the 2003 ACM SIGMOD international conference on Management of data, June 2003 Pages 241–252
+    |  DOI: https://doi.org/10.1145/872757.872787
+    """
 
     def __init__(self,error_rate:float=0.01):
         self.error_rate = error_rate
@@ -58,7 +71,8 @@ class Spectral_Bloom_Filter:
         """
         Returns string of zeros of width "length".
 
-        Params: length - size of the string
+        :param length: size of the string
+        :returns: string of 0s of the specified length
         """
         return ('0'*length)
 
@@ -71,6 +85,11 @@ class Spectral_Bloom_Filter:
 
         >>> list(gen_counter_chunks('123456789A', 4)) == ['1234', '5678', '9A']
         >>> list(gen_counter_chunks('123456789A', 4, drop_remaining = True)) == ['1234', '5678']
+
+        :param string: bit string whose chunks are to be obtained
+        :param chunk_size: size of each chunk (optimal: 4)
+        :param drop_remaining: to drop the extra string, if left, (default: False)
+        :returns: generator object containing the list of chunks
         """
         string_length = len(string)
 
@@ -90,9 +109,8 @@ class Spectral_Bloom_Filter:
         Example: For counter_length = 2
         Method returns - {'00': '01', '01': '10', '10': '11', '11': '11'}
 
-        Params: counter_length - No. of bits in each counter
-        
-        Returns: Dictionary used for binary counter operation
+        :param counter_length: No. of bits in each counter
+        :returns: Dictionary used for binary counter operation
         """
         digits = list(map(''.join, list( product('01', repeat=counter_length) )))
 
@@ -108,6 +126,11 @@ class Spectral_Bloom_Filter:
     def create_hashes(self, token:str, hashes:int, max_length:int) -> list:
         """
         Get the hased indices for the string
+
+        :param token: token to index
+        :param hashes: no. of hashes (k)
+        :param max_length: maximum length of the hash (m)
+        :returns: list of hashes
         """
         return [mmh3_hash(key=token, seed=index, signed=False)%max_length for index in range(hashes)]
 
@@ -117,28 +140,23 @@ class Spectral_Bloom_Filter:
                             bitarray_path:str="document.bin") -> bitarray:
         """
         Creates a spectral bloom filter.
-        Paper - SIGMOD '03: Proceedings of the 2003 ACM SIGMOD international conference on Management of data
-                June 2003 Pages 241–252
-                DOI: https://doi.org/10.1145/872757.872787
 
-        Params: tokens - List of words to index in spectral bloom filter
-                m - size of the bitarray
+        |  Paper:  SIGMOD '03: Proceedings of the 2003 ACM SIGMOD international conference on Management of data, June 2003 Pages 241–252
+        |  DOI: https://doi.org/10.1145/872757.872787
 
-                chunk_size - Size of each counter in Spectral Bloom Filter
-                             (Default - 4)
-                             Default of 4 means that the maximum increment a counter
-                             can perform is 2**4, which is 16.
-                no_hashes - No. of hashes to index word with
-                            (Deafult - 5)
-                method - Currently only "minimum" is supported.
-                         "minimum" stands for Minimum Increment
-                         (Default - "minimum")
-                to_bitarray - If True, will convert and save as bitarray in bitarray_path
-                              If False, method will return list of lists containing 
-                              the entire bitarray with chunks.
-                              (Default - True)
-                bitarray_path - Path to store the bitarray
-                                (Default - "document.bin")
+        :param tokens: List of words to index in spectral bloom filter
+        :param m: size of the bitarray
+        :param chunk_size: Size of each counter in Spectral Bloom Filter (default: 4).
+                           Default of 4 means that the maximum increment a counter.
+                           Can perform is 2**4, which is 16.
+        :param no_hashes: No. of hashes to index word with, (default: 5)
+        :param method: Currently only "minimum" is supported, (default: "minimum").
+                       "minimum" stands for Minimum Increment
+        :param to_bitarray: If True, will convert and save as bitarray in bitarray_path.
+                            If False, method will return list of lists containing 
+                            the entire bitarray with chunks.
+                            (Default: True).
+        :param bitarray_path: Path to store the bitarray, (default:"document.bin").
         """
         bin_arr = self.initialize_string(m*chunk_size)
 
@@ -174,12 +192,13 @@ class Spectral_Bloom_Filter:
         """
         From: https://stackoverflow.com/questions/658439/how-many-hash-functions-does-my-bloom-filter-need
 
-        Params: n - items expected in filter
-                p - false positive rate
-                chunk_size - number of bits in each counter
+        :param n: items expected in filter
+        :param p: false positive rate
+        :param chunk_size: number of bits in each counter
 
-        Returns: m - number of bits needed in the bloom filter
-                 k - number of hash functions we should apply
+        :returns: Tuple containing: 
+                 m for number of bits needed in the bloom filter (index 0) and
+                 k for number of hash functions we should apply (index 1)
         """
         m = (-n*log(p) / (log(2)**2))
         k = (m/n)*log(2)
