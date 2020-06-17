@@ -1,5 +1,15 @@
 import argparse
 from pprint import pprint
+from os.path import isdir,abspath
+
+
+def dir_path(path):
+    """Validates path to the source folder"""
+    if isdir(path):
+        return path
+    else:
+        raise argparse.ArgumentTypeError(f"'{abspath(path)}' is not a valid directory path.")
+
 
 def error_rate_arg(val):
     """Validates the error_rate for the arg parser"""
@@ -37,7 +47,7 @@ def create_arg_parser():
     #The directory argument - posititonal argument
     parser.add_argument(
         'path', 
-        type=str, 
+        type=dir_path, 
         help='Path to source directory for creating the filter'
     )
 
@@ -63,7 +73,7 @@ def create_arg_parser():
 
     #Lemmetization
     parser.add_argument(
-    '-l' ,'--lemmetize',
+        '-l' ,'--lemmetize',
         dest='enable_lemmetization', 
         action = 'store_true',
         help='Enable Lemmetization'
@@ -71,10 +81,10 @@ def create_arg_parser():
 
     #Remove stopwords
     parser.add_argument(
-    '-ds',
-    dest='remove_stopwords', 
-    action = 'store_false',
-    help='Disable stopword removal from file (not recommended)'
+        '-ds',
+        dest='remove_stopwords', 
+        action = 'store_false',
+        help='Disable stopword removal from file (not recommended)'
     )
 
     return parser
