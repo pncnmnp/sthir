@@ -9,8 +9,6 @@ from nltk.stem import WordNetLemmatizer
 from string import ascii_lowercase,digits
 from typing import Iterable , List
 
-
-
 def extract_html_bs4(html_file_path: str, remove_stopwords: bool = True,enable_lemmetization:bool=False):
     """
     Given a path to html file it will extract all text in it and return a list of words
@@ -60,56 +58,55 @@ def extract_html_bs4(html_file_path: str, remove_stopwords: bool = True,enable_l
 
     return chunks
 
-
-def extract_html_newspaper(html_file_path: str,
-                           author=False,
-                           title=False,
-                           remove_stopwords=True) -> List[str]:
+def extract_html_newspaper(html_file: str,
+                           remove_stopwords=True, 
+                           enable_lemmetization=False) -> List[str]:
     """
     Given a path to html file it will extract all text in it and return a list of words
     (using library: Newspaper3k)
 
     :param html_file_path: Path to html file, will be called with open()
     :type html_file_path: str
-    :param author: If true, words will also contain author names, defaults to False
-    :type author: bool, optional
-    :param title: If true, words will also contain title, defaults to False
-    :type title: bool, optional
     :param remove_stopwords: Will remove stopwords like ["the", "them",etc], defaults to False
     :type remove_stopwords: bool, optional
     :return: A list of words all in lowercase
     :rtype: List[str]
     """
-    allowed_chars = set(ascii_lowercase + digits + " ")
     invalid_words = set(stopwords.words("english"))
 
-    # Read html
     article = Article(url="")
-    with open(html_file_path, encoding='utf8') as html_file:
-        article.set_html(html_file.read())
+    # with open(html_file_path, encoding='utf8') as html_file:
+    article.set_html(open(html_file, "r").read())
     article.parse()
     text = article.text
 
-    # Extend with author
-    if author: text += " ".join(article.authors)
+    lines = word_tokenize(text)
+    lines = [line.strip() for line in lines]
 
-    # Extend with title
-    if title: text += article.title
+    # Tokenizing words
+    tokenizer = RegexpTokenizer(r'\w+')
+    chunks = [tokenizer.tokenize(line.lower()) for line in lines]
+
+    # Flatten
+    chunks = sum(chunks, [])
 
     # Remove stopwords
-    text = text.lower()
     if remove_stopwords:
-        text = " ".join(t for t in text.split() if t not in invalid_words)
+        chunks = [
+            chunk for chunk in chunks if chunk not in list(invalid_words)
+        ]
 
-    # Remove invalid chars
-    text = "".join(
-        [character for character in text if character in allowed_chars])
+    #Lemmatization   
+    if enable_lemmetization:
+        lemmatizer = WordNetLemmatizer() 
+        chunks = [ lemmatizer.lemmatize(chunk) for chunk in chunks ]
 
-    # Tokenize
-    words = word_tokenize(text)
-    return words
-
+    return chunks
 
 if __name__ == "__main__":
-    FILE = r"Testing\Algorithms interviews_ theory vs. practice.html"
-    print(extract_html_bs4(FILE)[:20])
+    import requests
+    import time
+    start = time.time()
+    response = requests.get("https://endler.dev/2018/ls/")
+    print("Fetched URL in {} seconds.".format(time.time() - start))
+    print(extract_html_newspaper(response.text))
