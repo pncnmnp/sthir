@@ -1,0 +1,276 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>spectral_bloom_filter module &#8212; Sthir 1 documentation</title>
+    <link rel="stylesheet" href="_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="scan module" href="scan.html" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head><body>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scan.html" title="scan module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Sthir 1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">static_site_search</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">spectral_bloom_filter module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-spectral_bloom_filter">
+<span id="spectral-bloom-filter-module"></span><h1>spectral_bloom_filter module<a class="headerlink" href="#module-spectral_bloom_filter" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="spectral_bloom_filter.Hash_Funcs">
+<em class="property">class </em><code class="sig-prename descclassname">spectral_bloom_filter.</code><code class="sig-name descname">Hash_Funcs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">k</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">m</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#spectral_bloom_filter.Hash_Funcs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="spectral_bloom_filter.Hash_Funcs.check_duplicates">
+<em class="property">static </em><code class="sig-name descname">check_duplicates</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">indices_list</span><span class="p">:</span> <span class="n">list</span></em><span class="sig-paren">)</span><a class="headerlink" href="#spectral_bloom_filter.Hash_Funcs.check_duplicates" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="spectral_bloom_filter.Hash_Funcs.check_hashes">
+<code class="sig-name descname">check_hashes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word_list</span><span class="p">:</span> <span class="n">list</span></em><span class="sig-paren">)</span><a class="headerlink" href="#spectral_bloom_filter.Hash_Funcs.check_hashes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logs the duplicate hashed indices for words in words_list</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>word_list</strong> – List of words</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="spectral_bloom_filter.Hash_Funcs.get_hashes">
+<code class="sig-name descname">get_hashes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#spectral_bloom_filter.Hash_Funcs.get_hashes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of k hashed indices for the input word</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>word</strong> – Word to be hashed</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of hashes of the word</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="spectral_bloom_filter.Spectral_Bloom_Filter">
+<em class="property">class </em><code class="sig-prename descclassname">spectral_bloom_filter.</code><code class="sig-name descname">Spectral_Bloom_Filter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">error_rate</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.01</span></em><span class="sig-paren">)</span><a class="headerlink" href="#spectral_bloom_filter.Spectral_Bloom_Filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Creates a Spectral Bloom Filter using the words parsed from the documents</p>
+<div class="line-block">
+<div class="line">Paper: SIGMOD ‘03: Proceedings of the 2003 ACM SIGMOD international conference on Management of data, June 2003 Pages 241–252</div>
+<div class="line">DOI: <a class="reference external" href="https://doi.org/10.1145/872757.872787">https://doi.org/10.1145/872757.872787</a></div>
+</div>
+<dl class="py method">
+<dt id="spectral_bloom_filter.Spectral_Bloom_Filter.create_filter">
+<code class="sig-name descname">create_filter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tokens</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">m</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">chunk_size</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">4</span></em>, <em class="sig-param"><span class="n">no_hashes</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">5</span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'minimum'</span></em>, <em class="sig-param"><span class="n">to_bitarray</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">bitarray_path</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'document.bin'</span></em><span class="sig-paren">)</span> &#x2192; &lt;module ‘bitarray’ from ‘/home/parthparikh/.local/lib/python3.6/site-packages/bitarray/__init__.py’&gt;<a class="headerlink" href="#spectral_bloom_filter.Spectral_Bloom_Filter.create_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a spectral bloom filter.</p>
+<div class="line-block">
+<div class="line">Paper:  SIGMOD ‘03: Proceedings of the 2003 ACM SIGMOD international conference on Management of data, June 2003 Pages 241–252</div>
+<div class="line">DOI: <a class="reference external" href="https://doi.org/10.1145/872757.872787">https://doi.org/10.1145/872757.872787</a></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tokens</strong> – List of words to index in spectral bloom filter</p></li>
+<li><p><strong>m</strong> – size of the bitarray</p></li>
+<li><p><strong>chunk_size</strong> – Size of each counter in Spectral Bloom Filter (default: 4).
+Default of 4 means that the maximum increment a counter.
+Can perform is 2**4, which is 16.</p></li>
+<li><p><strong>no_hashes</strong> – No. of hashes to index word with, (default: 5)</p></li>
+<li><p><strong>method</strong> – Currently only “minimum” is supported, (default: “minimum”).
+“minimum” stands for Minimum Increment</p></li>
+<li><p><strong>to_bitarray</strong> – If True, will convert and save as bitarray in bitarray_path.
+If False, method will return list of lists containing 
+the entire bitarray with chunks.
+(Default: True).</p></li>
+<li><p><strong>bitarray_path</strong> – Path to store the bitarray, (default:”document.bin”).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="spectral_bloom_filter.Spectral_Bloom_Filter.create_hashes">
+<code class="sig-name descname">create_hashes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">token</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">hashes</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">max_length</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#spectral_bloom_filter.Spectral_Bloom_Filter.create_hashes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the hased indices for the string</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>token</strong> – token to index</p></li>
+<li><p><strong>hashes</strong> – no. of hashes (k)</p></li>
+<li><p><strong>max_length</strong> – maximum length of the hash (m)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of hashes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="spectral_bloom_filter.Spectral_Bloom_Filter.gen_counter_chunks">
+<code class="sig-name descname">gen_counter_chunks</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">string</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">chunk_size</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">drop_remaining</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Iterable<span class="p">[</span>str<span class="p">]</span><a class="headerlink" href="#spectral_bloom_filter.Spectral_Bloom_Filter.gen_counter_chunks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields an iterator of chunks of specified size</p>
+<p>If drop_remaining is specified, the iterator is guaranteed to have  
+all chunks of same size.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">gen_counter_chunks</span><span class="p">(</span><span class="s1">&#39;123456789A&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span> <span class="o">==</span> <span class="p">[</span><span class="s1">&#39;1234&#39;</span><span class="p">,</span> <span class="s1">&#39;5678&#39;</span><span class="p">,</span> <span class="s1">&#39;9A&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">gen_counter_chunks</span><span class="p">(</span><span class="s1">&#39;123456789A&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">drop_remaining</span> <span class="o">=</span> <span class="kc">True</span><span class="p">))</span> <span class="o">==</span> <span class="p">[</span><span class="s1">&#39;1234&#39;</span><span class="p">,</span> <span class="s1">&#39;5678&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>string</strong> – bit string whose chunks are to be obtained</p></li>
+<li><p><strong>chunk_size</strong> – size of each chunk (optimal: 4)</p></li>
+<li><p><strong>drop_remaining</strong> – to drop the extra string, if left, (default: False)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>generator object containing the list of chunks</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="spectral_bloom_filter.Spectral_Bloom_Filter.init_counter">
+<code class="sig-name descname">init_counter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">counter_length</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#spectral_bloom_filter.Spectral_Bloom_Filter.init_counter" title="Permalink to this definition">¶</a></dt>
+<dd><p>To initialize a binary counter for incrementing 
+Spectral Bloom Filter’s counters.</p>
+<p>Example: For counter_length = 2
+Method returns - {‘00’: ‘01’, ‘01’: ‘10’, ‘10’: ‘11’, ‘11’: ‘11’}</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>counter_length</strong> – No. of bits in each counter</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary used for binary counter operation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="spectral_bloom_filter.Spectral_Bloom_Filter.initialize_string">
+<code class="sig-name descname">initialize_string</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#spectral_bloom_filter.Spectral_Bloom_Filter.initialize_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns string of zeros of width “length”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>length</strong> – size of the string</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>string of 0s of the specified length</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="spectral_bloom_filter.Spectral_Bloom_Filter.optimal_m_k">
+<code class="sig-name descname">optimal_m_k</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">p</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; tuple<a class="headerlink" href="#spectral_bloom_filter.Spectral_Bloom_Filter.optimal_m_k" title="Permalink to this definition">¶</a></dt>
+<dd><p>From: <a class="reference external" href="https://stackoverflow.com/questions/658439/how-many-hash-functions-does-my-bloom-filter-need">https://stackoverflow.com/questions/658439/how-many-hash-functions-does-my-bloom-filter-need</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> – items expected in filter</p></li>
+<li><p><strong>p</strong> – false positive rate</p></li>
+<li><p><strong>chunk_size</strong> – number of bits in each counter</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tuple containing: 
+m for number of bits needed in the bloom filter (index 0) and
+k for number of hash functions we should apply (index 1)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="scan.html"
+                        title="previous chapter">scan module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/spectral_bloom_filter.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scan.html" title="scan module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Sthir 1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >static_site_search</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">spectral_bloom_filter module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Parth Parikh, Mrunank Mistry, Dhruvam Kothari.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.1.
+    </div>
+  </body>
+</html>

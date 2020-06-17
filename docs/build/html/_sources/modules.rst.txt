@@ -1,0 +1,14 @@
+static_site_search
+==================
+
+.. toctree::
+   :maxdepth: 4
+
+   CLI
+   Test
+   convert_2p15
+   convert_byte
+   generate_search
+   parse
+   scan
+   spectral_bloom_filter

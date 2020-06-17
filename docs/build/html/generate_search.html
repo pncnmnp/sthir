@@ -1,0 +1,144 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>generate_search module &#8212; Sthir 1 documentation</title>
+    <link rel="stylesheet" href="_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="parse module" href="parse.html" />
+    <link rel="prev" title="convert_byte module" href="convert_byte.html" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head><body>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="parse.html" title="parse module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="convert_byte.html" title="convert_byte module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Sthir 1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">static_site_search</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">generate_search module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-generate_search">
+<span id="generate-search-module"></span><h1>generate_search module<a class="headerlink" href="#module-generate_search" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="generate_search.base2p15_decode">
+<code class="sig-prename descclassname">generate_search.</code><code class="sig-name descname">base2p15_decode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">base2p15</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#generate_search.base2p15_decode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="generate_search.base2p15_encode">
+<code class="sig-prename descclassname">generate_search.</code><code class="sig-name descname">base2p15_encode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bit_string</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#generate_search.base2p15_encode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="generate_search.base2p15_get_range">
+<code class="sig-prename descclassname">generate_search.</code><code class="sig-name descname">base2p15_get_range</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">base2p15</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">start</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">end</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#generate_search.base2p15_get_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="generate_search.gen_chunks">
+<code class="sig-prename descclassname">generate_search.</code><code class="sig-name descname">gen_chunks</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">string</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">chunk_size</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">drop_remaining</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Iterable<span class="p">[</span>str<span class="p">]</span><a class="headerlink" href="#generate_search.gen_chunks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields an iterator of chunks of specified size</p>
+<p>If drop_remaining is specified, the iterator is guaranteed to have  
+all chunks of same size.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">gen_counter_chunks</span><span class="p">(</span><span class="s1">&#39;123456789A&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span> <span class="o">==</span> <span class="p">[</span><span class="s1">&#39;1234&#39;</span><span class="p">,</span> <span class="s1">&#39;5678&#39;</span><span class="p">,</span> <span class="s1">&#39;9A&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">gen_counter_chunks</span><span class="p">(</span><span class="s1">&#39;123456789A&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">drop_remaining</span> <span class="o">=</span> <span class="kc">True</span><span class="p">))</span> <span class="o">==</span> <span class="p">[</span><span class="s1">&#39;1234&#39;</span><span class="p">,</span> <span class="s1">&#39;5678&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="convert_byte.html"
+                        title="previous chapter">convert_byte module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="parse.html"
+                        title="next chapter">parse module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/generate_search.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="parse.html" title="parse module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="convert_byte.html" title="convert_byte module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Sthir 1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >static_site_search</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">generate_search module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Parth Parikh, Mrunank Mistry, Dhruvam Kothari.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.1.
+    </div>
+  </body>
+</html>

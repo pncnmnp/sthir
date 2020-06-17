@@ -1,0 +1,7 @@
+CLI module
+==========
+
+.. automodule:: CLI
+   :members:
+   :undoc-members:
+   :show-inheritance:

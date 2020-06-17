@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>parse module &#8212; Sthir 1 documentation</title>
+    <link rel="stylesheet" href="_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="scan module" href="scan.html" />
+    <link rel="prev" title="generate_search module" href="generate_search.html" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head><body>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scan.html" title="scan module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="generate_search.html" title="generate_search module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Sthir 1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">static_site_search</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">parse module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-parse">
+<span id="parse-module"></span><h1>parse module<a class="headerlink" href="#module-parse" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="parse.extract_html_bs4">
+<code class="sig-prename descclassname">parse.</code><code class="sig-name descname">extract_html_bs4</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">html_file_path</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">remove_stopwords</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">enable_lemmetization</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#parse.extract_html_bs4" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a path to html file it will extract all text in it and return a list of words
+(using library: BeautifulSoup4)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>html_file_path</strong> (<em>str</em>) – Path to html file, will be called with open()</p></li>
+<li><p><strong>remove_stopwords</strong> (<em>bool</em><em>, </em><em>optional</em>) – Will remove stopwords like [“the”, “them”,etc], defaults to False</p></li>
+<li><p><strong>enable_lemmetization</strong> (<em>bool</em><em>, </em><em>optional</em>) – Will lemmetize words if set to True. Ex: cats-&gt;cat, defaults to False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of words all in lowercase</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="parse.extract_html_newspaper">
+<code class="sig-prename descclassname">parse.</code><code class="sig-name descname">extract_html_newspaper</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">html_file</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">remove_stopwords</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">enable_lemmetization</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>str<span class="p">]</span><a class="headerlink" href="#parse.extract_html_newspaper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a path to html file it will extract all text in it and return a list of words
+(using library: Newspaper3k)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>html_file_path</strong> (<em>str</em>) – Path to html file, will be called with open()</p></li>
+<li><p><strong>remove_stopwords</strong> (<em>bool</em><em>, </em><em>optional</em>) – Will remove stopwords like [“the”, “them”,etc], defaults to False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of words all in lowercase</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="generate_search.html"
+                        title="previous chapter">generate_search module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="scan.html"
+                        title="next chapter">scan module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/parse.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scan.html" title="scan module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="generate_search.html" title="generate_search module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Sthir 1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >static_site_search</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">parse module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Parth Parikh, Mrunank Mistry, Dhruvam Kothari.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.1.
+    </div>
+  </body>
+</html>

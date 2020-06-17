@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test module &#8212; Sthir 1 documentation</title>
+    <link rel="stylesheet" href="_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="convert_2p15 module" href="convert_2p15.html" />
+    <link rel="prev" title="CLI module" href="CLI.html" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head><body>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="convert_2p15.html" title="convert_2p15 module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="CLI.html" title="CLI module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Sthir 1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">static_site_search</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Test module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-Test">
+<span id="test-module"></span><h1>Test module<a class="headerlink" href="#module-Test" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="Test.Tester">
+<em class="property">class </em><code class="sig-prename descclassname">Test.</code><code class="sig-name descname">Tester</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">doc_name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">chunk_size</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">4</span></em>, <em class="sig-param"><span class="n">fp_rate</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0.1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Test.Tester" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class for testing the bloom filters</p>
+<dl class="py method">
+<dt id="Test.Tester.generate_Filter">
+<code class="sig-name descname">generate_Filter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">remove_stopwords</span></em>, <em class="sig-param"><span class="n">lemmetize</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Test.Tester.generate_Filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the counter and params for the specified document in Testing Folder</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Test.Tester.read_dict_words">
+<code class="sig-name descname">read_dict_words</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Test.Tester.read_dict_words" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads and returns a list of words in the english_dict.txt file</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Test.Tester.test_filter_for_FP">
+<code class="sig-name descname">test_filter_for_FP</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Test.Tester.test_filter_for_FP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests and logs the stats after testing the provided file</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="Test.create_logger">
+<code class="sig-prename descclassname">Test.</code><code class="sig-name descname">create_logger</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Test.create_logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a logger object</p>
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="CLI.html"
+                        title="previous chapter">CLI module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="convert_2p15.html"
+                        title="next chapter">convert_2p15 module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Test.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="convert_2p15.html" title="convert_2p15 module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="CLI.html" title="CLI module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Sthir 1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >static_site_search</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Test module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Parth Parikh, Mrunank Mistry, Dhruvam Kothari.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.1.
+    </div>
+  </body>
+</html>

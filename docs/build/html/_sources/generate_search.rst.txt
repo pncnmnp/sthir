@@ -1,0 +1,7 @@
+generate\_search module
+=======================
+
+.. automodule:: generate_search
+   :members:
+   :undoc-members:
+   :show-inheritance:

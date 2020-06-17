@@ -1,0 +1,7 @@
+convert\_byte module
+====================
+
+.. automodule:: convert_byte
+   :members:
+   :undoc-members:
+   :show-inheritance:
