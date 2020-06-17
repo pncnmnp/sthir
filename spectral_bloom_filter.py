@@ -55,6 +55,11 @@ class Spectral_Bloom_Filter:
         self.error_rate = error_rate
 
     def initialize_string(self, length:int):
+        """
+        Returns string of zeros of width "length".
+
+        Params: length - size of the string
+        """
         return ('0'*length)
 
     def gen_counter_chunks(self, string: str, chunk_size:int, drop_remaining:bool=False) -> Iterable[str]: 
@@ -106,7 +111,35 @@ class Spectral_Bloom_Filter:
         """
         return [mmh3_hash(key=token, seed=index, signed=False)%max_length for index in range(hashes)]
 
-    def create_filter(self, tokens:list, m:int, chunk_size:int=4, no_hashes:int=5, method:str="minimum", to_bitarray:bool=True, bitarray_path:str="document.bin") -> bitarray:
+    def create_filter(self, tokens:list, m:int, 
+                            chunk_size:int=4, no_hashes:int=5, 
+                            method:str="minimum", to_bitarray:bool=True, 
+                            bitarray_path:str="document.bin") -> bitarray:
+        """
+        Creates a spectral bloom filter.
+        Paper - SIGMOD '03: Proceedings of the 2003 ACM SIGMOD international conference on Management of data
+                June 2003 Pages 241–252
+                DOI: https://doi.org/10.1145/872757.872787
+
+        Params: tokens - List of words to index in spectral bloom filter
+                m - size of the bitarray
+
+                chunk_size - Size of each counter in Spectral Bloom Filter
+                             (Default - 4)
+                             Default of 4 means that the maximum increment a counter
+                             can perform is 2**4, which is 16.
+                no_hashes - No. of hashes to index word with
+                            (Deafult - 5)
+                method - Currently only "minimum" is supported.
+                         "minimum" stands for Minimum Increment
+                         (Default - "minimum")
+                to_bitarray - If True, will convert and save as bitarray in bitarray_path
+                              If False, method will return list of lists containing 
+                              the entire bitarray with chunks.
+                              (Default - True)
+                bitarray_path - Path to store the bitarray
+                                (Default - "document.bin")
+        """
         bin_arr = self.initialize_string(m*chunk_size)
 
         counter = list(self.gen_counter_chunks(bin_arr, chunk_size, drop_remaining=True))
