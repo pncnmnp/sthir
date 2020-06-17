@@ -6,10 +6,9 @@ from os.path import isdir,abspath
 def dir_path(path):
     """Validates path to the source folder"""
     if isdir(path):
-        return path
+        return abspath(path) 
     else:
         raise argparse.ArgumentTypeError(f"'{abspath(path)}' is not a valid directory path.")
-
 
 def error_rate_arg(val):
     """Validates the error_rate for the arg parser"""
