@@ -11,12 +11,27 @@ from generate_search import base2p15_encode
 import lxml.html
 
 def get_all_html_files(directory):
+    """
+    Returns list of html files located in the directory
+    """
     return glob.glob(directory+"/*.html")
 
 def get_all_bin_files(directory):
-    return glob.glob("./*.bin")
+    """
+    Returns list of bin files located in the directory
+    """
+    return glob.glob(directory+"./*.bin")
 
 def generate_bloom_filter(file, false_positive=0.1, chunk_size=4, remove_stopwords=True):
+    """
+    Generates a bloom filter and saves it in .bin file
+    The saved .bin filename is same as that of the .html file name
+    Returns a dictionary containing the - 
+    length of the bitarray (m), no of hash functions used (k), chunk size (chunk_size),
+    binary file name (bin_file), and HTML file's title (title).
+
+    This method is internally used in method - create_search_page
+    """
     spectral = spectral_bloom_filter.Spectral_Bloom_Filter()
     tokens = parse.extract_html_newspaper(file,remove_stopwords=remove_stopwords)
 
@@ -37,6 +52,24 @@ def generate_bloom_filter(file, false_positive=0.1, chunk_size=4, remove_stopwor
     }
 
 def create_search_page(directory, output_file="search.html", false_positive=0.1, chunk_size=4, remove_stopwords=True):
+    """
+    Generates the search output file using the directory path.
+
+    Params: directory - Directory path where HTML files are located
+            output_file - name of the output file
+                          (Deafult - "search.html")
+            false_positive - Acceptable false positive rate during search
+                             (Default - 0.1)
+                             0.01 is a better alternative, at the cost of increase in file size.
+            chunk_size - Size of each counter in Spectral Bloom Filter
+                         (Default - 4)
+                         Default of 4 means that the maximum increment a counter
+                         can perform is 2**4, which is 16.
+            remove_stopwords - To remove stopwords
+                               (Default - True)
+
+    It saves the search file in the output_file path.
+    """
     files = get_all_html_files(directory)
     bloom_meta = list()
     for file in files:
@@ -59,6 +92,10 @@ def create_search_page(directory, output_file="search.html", false_positive=0.1,
         f.write(convert_2p15.HTML_TEMPLATE["TAIL"].format(base2p15_arrs))
 
 def download_urls(json_file, output_file=""):
+    """
+    Downloads and saves HTML files using a JSON file containing list of URLs.
+    (For Debugging purposes)
+    """
     for url in json.load(open(json_file)):
         start = time.time()
         response = requests.get(url)
