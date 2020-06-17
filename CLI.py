@@ -6,7 +6,7 @@ import scan
 def dir_path(path):
     """Validates path to the source folder"""
     if isdir(path):
-        return abspath(path) 
+        return path
     else:
         raise argparse.ArgumentTypeError(f"'{abspath(path)}' is not a valid directory path.")
 
@@ -91,7 +91,7 @@ def create_arg_parser():
 if __name__ == "__main__":
     parser = create_arg_parser()
 
-    args = vars(parser.parse_args()) #Convert to dictionary
+    args = vars(parser.parse_args()) # Convert to dictionary
 
     # args- Arguments which are needed to create the SB filter.
     # pprint( args )
