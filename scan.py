@@ -1,26 +1,26 @@
-
-from bitarray import bitarray
+import spectral_bloom_filter
+import parse
 import convert_2p15
-
+import base64
+import glob
+import json
+import requests
+import time
+from bitarray import bitarray
 from generate_search import base2p15_encode
-from glob import glob
-
-from lxml.html import parse as html_parse
-
-from parse import extract_html_bs4
-from spectral_bloom_filter import Spectral_Bloom_Filter
+import lxml.html
 
 def get_all_html_files(directory):
-    return glob("./*.html")
+    return glob.glob(directory+"/*.html")
 
 def get_all_bin_files(directory):
-    return glob("./*.bin")
+    return glob.glob("./*.bin")
 
-def generate_bloom_filter(file, false_positive=0.1, chunk_size=4):
-    spectral = Spectral_Bloom_Filter()
-    tokens = extract_html_bs4(file)
+def generate_bloom_filter(file, false_positive=0.1, chunk_size=4, remove_stopwords=True):
+    spectral = spectral_bloom_filter.Spectral_Bloom_Filter()
+    tokens = parse.extract_html_newspaper(file,remove_stopwords=remove_stopwords)
 
-    title = html_parse(file).find(".//title").text
+    title = lxml.html.parse(file).find(".//title").text
 
     no_items = len(tokens)
     m, k = spectral.optimal_m_k(no_items, false_positive)
@@ -36,11 +36,11 @@ def generate_bloom_filter(file, false_positive=0.1, chunk_size=4):
         "title": title
     }
 
-def create_search_page(directory):
+def create_search_page(directory, output_file="search.html", false_positive=0.1, chunk_size=4, remove_stopwords=True):
     files = get_all_html_files(directory)
     bloom_meta = list()
     for file in files:
-        bloom_meta.append(generate_bloom_filter(file))
+        bloom_meta.append(generate_bloom_filter(file, false_positive=false_positive, chunk_size=chunk_size, remove_stopwords=remove_stopwords))
 
     base2p15_arrs = list()
     for document in bloom_meta:
@@ -54,9 +54,19 @@ def create_search_page(directory):
                                 document["k"], document["bin_file"], document["title"]])
         print("Scanned: {}".format(document["bin_file"]))
 
-    with open("output_2p15.html", "w") as f:
+    with open(output_file, "w") as f:
         f.write(convert_2p15.HTML_TEMPLATE["HEAD"])
         f.write(convert_2p15.HTML_TEMPLATE["TAIL"].format(base2p15_arrs))
 
+def download_urls(json_file, output_file=""):
+    for url in json.load(open(json_file)):
+        start = time.time()
+        response = requests.get(url)
+        print("Fetched {} in {} seconds.".format(url, time.time() - start))
+        with open(output_file+response.url.replace("/","")+"a.html", "w") as f:
+            f.write(response.text)
+        print("Saved at: " + output_file+response.url.replace("/","")+"a.html")
+
 if __name__ == "__main__":
-    create_search_page("./")
+    # create_search_page(".", output_file="out.html", false_positive=0.01)
+    download_urls("a.json")
