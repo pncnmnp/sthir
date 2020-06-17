@@ -24,11 +24,10 @@ def get_all_bin_files(directory):
 
 def generate_bloom_filter(file, false_positive=0.1, chunk_size=4, remove_stopwords=True):
     """
-    Generates a bloom filter and saves it in .bin file
-    The saved .bin filename is same as that of the .html file name
-    Returns a dictionary containing the - 
-    length of the bitarray (m), no of hash functions used (k), chunk size (chunk_size),
-    binary file name (bin_file), and HTML file's title (title).
+    |  Generates a bloom filter and saves it in .bin file.
+    |  The saved .bin filename is same as that of the .html file name.
+    |  Returns a dictionary containing the - 
+    |  length of the bitarray (m), no of hash functions used (k), chunk size (chunk_size), binary file name (bin_file), and HTML file's title (title).
 
     This method is internally used in method - create_search_page
     """
@@ -55,18 +54,17 @@ def create_search_page(directory, output_file="search.html", false_positive=0.1,
     """
     Generates the search output file using the directory path.
 
-    Params: directory - Directory path where HTML files are located
-            output_file - name of the output file
-                          (Deafult - "search.html")
-            false_positive - Acceptable false positive rate during search
+    :param directory: Directory path where HTML files are located
+    :param output_file: name of the output file
+                        (Default - "search.html")
+    :param false_positive: Acceptable false positive rate during search
                              (Default - 0.1)
                              0.01 is a better alternative, at the cost of increase in file size.
-            chunk_size - Size of each counter in Spectral Bloom Filter
-                         (Default - 4)
-                         Default of 4 means that the maximum increment a counter
-                         can perform is 2**4, which is 16.
-            remove_stopwords - To remove stopwords
-                               (Default - True)
+    :param chunk_size: Size of each counter in Spectral Bloom Filter
+                       (Default - 4)
+                       Default of 4 means that the maximum increment a counter can perform is 2**4, which is 16.
+    :param remove_stopwords: To remove stopwords
+                             (Default - True)
 
     It saves the search file in the output_file path.
     """
