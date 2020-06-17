@@ -1,7 +1,7 @@
 import argparse
 from pprint import pprint
 from os.path import isdir,abspath
-
+import scan
 
 def dir_path(path):
     """Validates path to the source folder"""
@@ -57,7 +57,7 @@ def create_arg_parser():
         metavar="ErrorRate",
         dest='error_rate', 
         default= 0.01, 
-        help='Error_rate for the filter  Range:[0.0,1.0]  Default:0.1'
+        help='Error_rate for the filter  Range:[0.0,1.0]  Default:0.01'
     )
 
     #Counter_size
@@ -94,4 +94,5 @@ if __name__ == "__main__":
     args = vars(parser.parse_args()) #Convert to dictionary
 
     # args- Arguments which are needed to create the SB filter.
-    pprint( args )
+    # pprint( args )
+    scan.create_search_page(args["path"], output_file="search.html", false_positive=args["error_rate"], chunk_size=args["chunk_size"], remove_stopwords=args["remove_stopwords"])
