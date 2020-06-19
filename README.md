@@ -50,28 +50,16 @@ make install
 npm test
 ```
 
-## Release History
+## License
 
-* 0.2.1
-    * CHANGE: Update docs (module code remains unchanged)
-* 0.2.0
-    * CHANGE: Remove `setDefaultXYZ()`
-    * ADD: Add `init()`
-* 0.1.1
-    * FIX: Crash when calling `baz()` (Thanks @GenerousContributorName!)
-* 0.1.0
-    * The first proper release
-    * CHANGE: Rename `foo()` to `bar()`
-* 0.0.1
-    * Work in progress
+The library is licensed under MIT License. This project is developed by [Parth Parikh](https://github.com/pncnmnp), [Mrunank Mistry](https://github.com/fork52), and [Dhruvam Kothari](https://github.com/iotarepeat).
 
-## Meta
+## Credits
 
-Your Name – [@YourTwitter](https://twitter.com/dbader_org) – YourEmail@example.com
-
-Distributed under the XYZ license. See ``LICENSE`` for more information.
-
-[https://github.com/pncnmnp/Spectral-Bloom-Search/blob/master/LICENSE](LICENSE)
+* Spectral bloom filters by Saar Cohen and Yossi Matias. DOI: https://doi.org/10.1145/872757.872787
+* [Karan Lyons](https://github.com/karanlyons/) and [Sascha Droste](https://github.com/pid/) for [MurmurHash3js](https://github.com/pid/murmurHash3js). 
+* [Zhuhongk](https://stackoverflow.com/users/2959866/zhuhongk) and [Nikolas](https://stackoverflow.com/users/710543/nikolas) for their code on [Is there a pure python implementation of MurmurHash?](https://stackoverflow.com/questions/13305290/is-there-a-pure-python-implementation-of-murmurhash?rq=1).
+* [Data files](https://github.com/pncnmnp/sthir/tree/master/sthir/resources) are derived from the Google Web Trillion Word Corpus, as described by Thorsten Brants and Alex Franz, and distributed by the Linguistic Data Consortium. Subsets of this corpus distributed by Peter Novig. Corpus editing and cleanup by Josh Kaufman.
 
 ## Contributing
 
