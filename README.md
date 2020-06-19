@@ -1,13 +1,22 @@
 # Sthir
 
-> A python package for creating spectral bloom filter search for static websites on the client side.
+<p align="center">
+<img src="https://github.com/pncnmnp/sthir/blob/master/logo.png">
+</p>
+
+**Search using spectral bloom filters in static sites**
 
 [![sthir][sthir-img]][sthir-url]
 [![docs][docs-img]][docs-url]
 [![python][python-img]][python-url]
 [![MIT License][license-image]][license-url]
 
-**sthir** can create *memory efficient* search feature for your static website. sthir is equipped with an *user friendly command-line interface*. In two steps you can build a working search page for your website!
+**Sthir** can create *memory efficient* search feature for your static website. Sthir is equipped with an *user friendly command-line interface*. In two steps you can build a working search page for your website!
+
+## Description
+Sthir is a library to create search functionality for your static websites. It scans your `html` pages for words and indexes these words in an efficient data structure called **Spectral Bloom Filters**. Spectral Bloom Filteres differs from regular ones as they can store counts for each hash (it can estimate, at minimum, how many times a hash was indexed). We are using an efficient base 15 decoding to compress and transfer the bloom filters at client side. Our goal can be described with a simple equation:
+
+`Less Memory Footprint + Term Frequency Knowledge = Perfect Search Functionality for Static Sites!`
 
 ## Installation
 
