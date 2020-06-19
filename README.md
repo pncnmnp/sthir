@@ -2,7 +2,7 @@
 
 > A python package for creating spectral bloom filter search for static websites on the client side.
 
-[![NPM Version][npm-image]][npm-url]
+[![sthir][sthir-img]][sthir-url]
 [![Build Status][travis-image]][travis-url]
 [![MIT License][license-image]](http://choosealicense.com/licenses/mit/)
 [![Downloads Stats][npm-downloads]][npm-url]
@@ -82,4 +82,6 @@ Distributed under the XYZ license. See ``LICENSE`` for more information.
 [travis-image]: https://img.shields.io/travis/dbader/node-datadog-metrics/master.svg?style=flat-square
 [travis-url]: https://travis-ci.org/dbader/node-datadog-metrics
 [wiki]: https://github.com/yourname/yourproject/wiki
-[license-image]:https://img.shields.io/badge/license-MIT-blue.svg?style=flat
+[license-image]:https://img.shields.io/badge/LICENSE-MIT-blue?style=flat
+[sthir-img]:https://img.shields.io/badge/sthir-v0.0.1-yellow?style=flat
+[sthir-url]:https://github.com/pncnmnp/sthir
