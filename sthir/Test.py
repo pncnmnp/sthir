@@ -1,6 +1,5 @@
 from collections import Counter
 
-import sthir.Testing
 #To be removed
 from logging import Formatter,FileHandler,getLogger
 from logging import DEBUG 

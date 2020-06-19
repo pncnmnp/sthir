@@ -3,5 +3,5 @@ include sthir/resources/*.txt
 include sthir/resources/*.md
 include sthir/js_utils/*.txt
 include sthir/js_utils/*.js
-recursive-include docs *
+recursive-include docs/build *
 
