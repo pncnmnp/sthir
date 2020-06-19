@@ -9,9 +9,7 @@
 
 sthir can create memory efficient search feature for your static website. sthir is equipped with an user friendly command-line interface. In two steps you can build a working search page for your website!
 
-![](header.png)
-
-## Installation 
+## Installation
 
 sthir runs on Python 3.5 or above.
 
