@@ -23,24 +23,23 @@ Sthir is a library to create search functionality for your static websites. It s
 sthir runs on Python 3.5 or above.
 
 Installation with pip via PyPI for OS X , Linux and Windows:
-
 ```sh
 pip install sthir
 ```
-
 To check installation run the following command:
-
 ```sh
 sthir -h
 ```
-
 If you see the help messages without any error then the installation was successful.
 
-## Usage example
+## Documentation
+Here is a working demo - 
 
-A few motivating and useful examples of how your product can be used. Spice this up with code blocks and potentially more screenshots.
+![terminal-output](https://github.com/pncnmnp/sthir/blob/master/demo.gif)
 
-_For more examples and usage, please refer to the [Wiki][wiki]._
+**Our entire documentation is available in**:
+* [PDF](https://github.com/pncnmnp/sthir/blob/master/docs/build/latex/sthir.pdf)
+* [HTML](https://github.com/pncnmnp/sthir/tree/master/docs/build/html)
 
 ## Development setup
 
