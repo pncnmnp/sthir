@@ -69,4 +69,4 @@ The library is licensed under MIT License. This project is developed by [Parth P
 [python-url]:https://www.python.org/downloads/release/python-350/
 [python-img]:https://img.shields.io/badge/python-3.5-green
 [docs-img]:https://img.shields.io/badge/docs-sthir--docs-orange
-[docs-url]:https://github.com/pncnmnp/sthir/
+[docs-url]:https://github.com/pncnmnp/sthir/blob/master/docs/build/latex/sthir.pdf
