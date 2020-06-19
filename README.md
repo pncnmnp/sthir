@@ -4,19 +4,30 @@
 
 [![NPM Version][npm-image]][npm-url]
 [![Build Status][travis-image]][travis-url]
+[![MIT License][license-image]](http://choosealicense.com/licenses/mit/)
 [![Downloads Stats][npm-downloads]][npm-url]
 
 sthir can create memory efficient search feature for your static website. sthir is equipped with an user friendly command-line interface. In two steps you can build a working search page for your website!
 
 ![](header.png)
 
-## Installation from PyPI via pip
+## Installation 
 
-OS X , Linux and Windows:
+sthir runs on Python 3.5 or above.
+
+Installation with pip via PyPI for OS X , Linux and Windows:
 
 ```sh
 pip install sthir
 ```
+
+To check installation run the following command:
+
+```sh
+sthir -h
+```
+
+If you see the help messages without any error than the install was successful.
 
 ## Usage example
 
@@ -54,7 +65,7 @@ Your Name – [@YourTwitter](https://twitter.com/dbader_org) – YourEmail@examp
 
 Distributed under the XYZ license. See ``LICENSE`` for more information.
 
-[https://github.com/yourname/github-link](https://github.com/dbader/)
+[https://github.com/pncnmnp/Spectral-Bloom-Search/blob/master/LICENSE](LICENSE)
 
 ## Contributing
 
@@ -71,3 +82,4 @@ Distributed under the XYZ license. See ``LICENSE`` for more information.
 [travis-image]: https://img.shields.io/travis/dbader/node-datadog-metrics/master.svg?style=flat-square
 [travis-url]: https://travis-ci.org/dbader/node-datadog-metrics
 [wiki]: https://github.com/yourname/yourproject/wiki
+[license-image]:https://img.shields.io/badge/license-MIT-blue.svg?style=flat

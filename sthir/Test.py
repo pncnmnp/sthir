@@ -38,9 +38,9 @@ def create_logger():
     return logger
 
 class Tester:
-    """Class for testing the bloom filters"""
+    """Class for testing the spectal bloom filters"""
     def __init__(self, doc_name:str , chunk_size:int = 4 , fp_rate:int = 0.1):
-        """doc_name is the name of the file in the Testing directory"""
+        """'doc_name' is the name or path to the file you which to test on."""
         self.doc_name = doc_name
         self.chunk_size = chunk_size
         self.fp_rate = fp_rate

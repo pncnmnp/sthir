@@ -5,4 +5,4 @@
 dist
 
 # Python egg metadata, regenerated from source files by setuptools.
-sthir.egg-info
+sthir.egg-info/
