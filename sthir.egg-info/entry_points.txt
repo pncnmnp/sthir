@@ -1,0 +1,3 @@
+[console_scripts]
+sthir = sthir.CLI:create_arg_parser
+
