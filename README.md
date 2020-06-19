@@ -41,15 +41,6 @@ Here is a working demo -
 * [PDF](https://github.com/pncnmnp/sthir/blob/master/docs/build/latex/sthir.pdf)
 * [HTML](https://github.com/pncnmnp/sthir/tree/master/docs/build/html)
 
-## Development setup
-
-Describe how to install all development dependencies and how to run an automated test-suite of some kind. Potentially do this for multiple platforms.
-
-```sh
-make install
-npm test
-```
-
 ## License
 
 The library is licensed under MIT License. This project is developed by [Parth Parikh](https://github.com/pncnmnp), [Mrunank Mistry](https://github.com/fork52), and [Dhruvam Kothari](https://github.com/iotarepeat).
