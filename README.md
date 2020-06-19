@@ -22,7 +22,7 @@ Sthir is a library to create search functionality for your static websites. It s
 
 sthir runs on Python 3.5 or above.
 
-Installation with pip via PyPI for OS X , Linux and Windows:
+Installation with [pip via PyPI](https://pypi.org/project/sthir/) for Linux, OS X and Windows:
 ```sh
 pip install sthir
 ```
