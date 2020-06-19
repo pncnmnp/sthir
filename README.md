@@ -3,9 +3,9 @@
 > A python package for creating spectral bloom filter search for static websites on the client side.
 
 [![sthir][sthir-img]][sthir-url]
-[![Build Status][travis-image]][travis-url]
-[![MIT License][license-image]](http://choosealicense.com/licenses/mit/)
-[![Downloads Stats][npm-downloads]][npm-url]
+[![docs][docs-img]][docs-url]
+[![python][python-img]][python-url]
+[![MIT License][license-image]][license-url]
 
 sthir can create memory efficient search feature for your static website. sthir is equipped with an user friendly command-line interface. In two steps you can build a working search page for your website!
 
@@ -25,7 +25,7 @@ To check installation run the following command:
 sthir -h
 ```
 
-If you see the help messages without any error than the install was successful.
+If you see the help messages without any error then the installation was successful.
 
 ## Usage example
 
@@ -74,12 +74,12 @@ Distributed under the XYZ license. See ``LICENSE`` for more information.
 5. Create a new Pull Request
 
 <!-- Markdown link & img dfn's -->
-[npm-image]: https://img.shields.io/npm/v/datadog-metrics.svg?style=flat-square
-[npm-url]: https://npmjs.org/package/datadog-metrics
-[npm-downloads]: https://img.shields.io/npm/dm/datadog-metrics.svg?style=flat-square
-[travis-image]: https://img.shields.io/travis/dbader/node-datadog-metrics/master.svg?style=flat-square
-[travis-url]: https://travis-ci.org/dbader/node-datadog-metrics
 [wiki]: https://github.com/yourname/yourproject/wiki
 [license-image]:https://img.shields.io/badge/LICENSE-MIT-blue?style=flat
+[license-url]:https://github.com/pncnmnp/sthir/blob/master/LICENSE
 [sthir-img]:https://img.shields.io/badge/sthir-v0.0.1-yellow?style=flat
 [sthir-url]:https://github.com/pncnmnp/sthir
+[python-url]:https://www.python.org/downloads/release/python-350/
+[python-img]:https://img.shields.io/badge/python-3.5-green
+[docs-img]:https://img.shields.io/badge/docs-sthir--docs-orange
+[docs-url]:https://github.com/pncnmnp/sthir/
