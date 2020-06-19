@@ -7,7 +7,7 @@
 [![python][python-img]][python-url]
 [![MIT License][license-image]][license-url]
 
-sthir can create memory efficient search feature for your static website. sthir is equipped with an user friendly command-line interface. In two steps you can build a working search page for your website!
+**sthir** can create *memory efficient* search feature for your static website. sthir is equipped with an *user friendly command-line interface*. In two steps you can build a working search page for your website!
 
 ## Installation
 
