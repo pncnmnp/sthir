@@ -18,6 +18,8 @@ Sthir is a library to create search functionality for your static websites. It s
 
 `Less Memory Footprint + Term Frequency Knowledge = Perfect Search Functionality for Static Sites!`
 
+*A deployed example of our library can be found on [this blog](https://pncnmnp.github.io/blogs/search.html).*
+
 ## Installation
 
 sthir runs on Python 3.5 or above.
