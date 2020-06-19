@@ -1,11 +1,7 @@
 from bitarray import bitarray
 from itertools import product
 
-#To be removed
-from logging import Formatter,FileHandler,getLogger
-from logging import DEBUG 
-
-from mmh3 import hash as mmh3_hash
+from sthir.mmh3 import murmur3_x86_32 as mmh3_hash
 from math import log , ceil
 
 from sys import getsizeof
@@ -23,7 +19,7 @@ class Hash_Funcs:
         self.k = k
         self.hash_funcs_list = []
         for i in range(self.k):
-            self.hash_funcs_list.append( lambda x,s : mmh3_hash( x , seed = s, signed=False) % m )
+            self.hash_funcs_list.append( lambda x,s : mmh3_hash( x , seed = s) % m )
 
     def get_hashes(self, word:str )->list:
         """
@@ -46,7 +42,6 @@ class Hash_Funcs:
             res = Hash_Funcs.check_duplicates(indices)
             if res and res[1] not in faulty_words:
                 faulty_words.add(res[1])
-                logger.warning('\tWord:{} \n\tIndices:{} \n\tRepeated:{}'.format(w , indices, res[1] ) )
 
     @staticmethod
     def check_duplicates(indices_list:list):
@@ -132,7 +127,7 @@ class Spectral_Bloom_Filter:
         :param max_length: maximum length of the hash (m)
         :returns: list of hashes
         """
-        return [mmh3_hash(key=token, seed=index, signed=False)%max_length for index in range(hashes)]
+        return [mmh3_hash(key=token, seed=index)%max_length for index in range(hashes)]
 
     def create_filter(self, tokens:list, m:int, 
                             chunk_size:int=4, no_hashes:int=5, 
@@ -204,36 +199,3 @@ class Spectral_Bloom_Filter:
         k = (m/n)*log(2)
         return ( ceil(m), round(k))
 
-if __name__ == "__main__":
-    #logging
-    logger = getLogger(name='SBF')
-    logger.setLevel(DEBUG)
-
-    formatter = Formatter(
-        '%(asctime)s: %(name)s :- %(levelname)s: \n%(message)s',
-        datefmt='%m/%d/%Y %I:%M:%S %p'
-    )
-
-    file_handler = FileHandler('bloomfilter.log')
-    file_handler.setFormatter(formatter)
-
-    logger.addHandler(file_handler)
-
-    import parse
-    FILE = r"Testing\Algorithms interviews_ theory vs. practice.html"
-
-    spectral = Spectral_Bloom_Filter()
-    tokens = parse.extract_html_bs4(FILE)
-
-    chunk_size = 4
-    no_items = len(tokens)
-    false_positive = 0.1
-
-    m, k = spectral.optimal_m_k(no_items, false_positive)
-    # print(m, k, no_items)
-
-    h = Hash_Funcs(k,m)
-    h.check_hashes(tokens)   
-    logger.info( "\tNo_of_words:{} Count_array_size:{} No_of_hashes:{} ,\n\terror_rate:{}".format(no_items, m, k,false_positive))
-
-    # print(spectral.create_filter(tokens, m, chunk_size, k))

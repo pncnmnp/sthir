@@ -76,7 +76,7 @@ def extract_html_newspaper(html_file: str,
 
     article = Article(url="")
     # with open(html_file_path, encoding='utf8') as html_file:
-    article.set_html(open(html_file, "r").read())
+    article.set_html(open(html_file, "r" , encoding='utf8').read())
     article.parse()
     text = article.text
 

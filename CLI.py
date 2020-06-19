@@ -1,7 +1,7 @@
 import argparse
 from pprint import pprint
 from os.path import isdir,abspath
-import scan
+import sthir.scan as scan
 
 def dir_path(path):
     """Validates path to the source folder"""
@@ -83,16 +83,11 @@ def create_arg_parser():
         '-ds',
         dest='remove_stopwords', 
         action = 'store_false',
-        help='Disable stopword removal from file (not recommended)'
+        help='Disable stopword removal from files (not recommended)'
     )
 
-    return parser
-
-if __name__ == "__main__":
-    parser = create_arg_parser()
-
     args = vars(parser.parse_args()) # Convert to dictionary
-
     # args- Arguments which are needed to create the SB filter.
-    # pprint( args )
     scan.create_search_page(args["path"], output_file="search.html", false_positive=args["error_rate"], chunk_size=args["chunk_size"], remove_stopwords=args["remove_stopwords"])
+
+

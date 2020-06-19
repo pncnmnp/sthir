@@ -1,22 +1,24 @@
 from collections import Counter
 
+import sthir.Testing
 #To be removed
 from logging import Formatter,FileHandler,getLogger
 from logging import DEBUG 
 
 from nltk.stem import WordNetLemmatizer 
-from parse import extract_html_bs4
-from spectral_bloom_filter import  Spectral_Bloom_Filter , Hash_Funcs
+from sthir.parse import extract_html_bs4
+from sthir.spectral_bloom_filter import  Spectral_Bloom_Filter , Hash_Funcs
 from typing import Iterable
 
+import pkgutil
+import io
 
 
 """"
-Step1: Add your html file to Testing.py
-Step2: Create a Tester object by passing your filename and parameters
-Step3: Call the generate_Filter() method 
-Step4: Call test_filter() method
-Step5: Check ./Testing/bloomfilter.log
+Step1: Create a Tester object by passing your filename and parameters
+Step2: Call the generate_Filter() method 
+Step3: Call test_filter() method
+Step4: Check bloomfilter.log in current directory
 """
 
 
@@ -30,7 +32,7 @@ def create_logger():
         datefmt='%m/%d/%Y %I:%M:%S %p'
     )
 
-    file_handler = FileHandler(r'Testing\bloomfilter.log')
+    file_handler = FileHandler(r'bloomfilter.log')
     file_handler.setFormatter(formatter)
 
     logger.addHandler(file_handler)
@@ -52,7 +54,7 @@ class Tester:
         """
         self.lemmetize = lemmetize
 
-        self.FILE = "Testing\\" + self.doc_name
+        self.FILE =  self.doc_name
 
         self.spectral = Spectral_Bloom_Filter()
         self.tokens = extract_html_bs4(self.FILE ,remove_stopwords , lemmetize )
@@ -71,8 +73,8 @@ class Tester:
 
     def read_dict_words(self):
         """Reads and returns a list of words in the english_dict.txt file"""
-        f = open(r"Testing\english_dict.txt",'r')
-        l = f.readlines()
+        dataString = pkgutil.get_data( "sthir", "resources/english_dict.txt")
+        l = [ str(i)[2:-1] for i in dataString.splitlines()]
         l = [ word.strip() for word in l]
         if self.lemmetize: 
             lemmatizer = WordNetLemmatizer() 
@@ -121,14 +123,4 @@ class Tester:
             "\tTheoretical error_probability: {}\n".format( 0.5 ** self.k ) +
             "\tTotal Error: {}\n".format( (fp_count+wrong_count) / no_of_words )  
         )
-
-
-if __name__ == "__main__":
-    
-    #Keep the html file in ./Testing/
-    file_name = r"Algorithms interviews_ theory vs. practice.html"
-
-    test_obj = Tester(file_name , chunk_size= 4 , fp_rate= 0.1)
-    test_obj.generate_Filter( True, False )
-    test_obj.test_filter_for_FP()
 

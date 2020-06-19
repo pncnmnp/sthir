@@ -1,14 +1,15 @@
-import spectral_bloom_filter
-import parse
-import convert_2p15
+import sthir.spectral_bloom_filter as spectral_bloom_filter
+import sthir.parse as parse
+import sthir.convert_2p15 as convert_2p15
 import base64
 import glob
 import json
 import requests
 import time
 from bitarray import bitarray
-from generate_search import base2p15_encode
+from sthir.generate_search import base2p15_encode
 import lxml.html
+import io
 
 def get_all_html_files(directory):
     """
@@ -85,9 +86,9 @@ def create_search_page(directory, output_file="search.html", false_positive=0.1,
                                 document["k"], document["bin_file"], document["title"]])
         print("Scanned: {}".format(document["bin_file"]))
 
-    with open(output_file, "w") as f:
+    with open(output_file, "w" ,encoding='utf8') as f:
         f.write(convert_2p15.HTML_TEMPLATE["HEAD"])
-        f.write(convert_2p15.HTML_TEMPLATE["TAIL"].format(base2p15_arrs))
+        f.write(convert_2p15.HTML_TEMPLATE["TAIL"].format(base2p15_arrs)  )
 
 def download_urls(json_file, output_file=""):
     """
@@ -98,7 +99,7 @@ def download_urls(json_file, output_file=""):
         start = time.time()
         response = requests.get(url)
         print("Fetched {} in {} seconds.".format(url, time.time() - start))
-        with open(output_file+response.url.replace("/","")+"a.html", "w") as f:
+        with open(output_file+response.url.replace("/","")+"a.html", "w" ,encoding='utf8') as f:
             f.write(response.text)
         print("Saved at: " + output_file+response.url.replace("/","")+"a.html")
 
