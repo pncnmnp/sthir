@@ -48,6 +48,7 @@ The library is licensed under MIT License. This project is developed by [Parth P
 ## Credits
 
 * Spectral bloom filters by Saar Cohen and Yossi Matias. DOI: https://doi.org/10.1145/872757.872787
+* [Writing a full-text search engine using Bloom filters](https://www.stavros.io/posts/bloom-filter-search-engine/) by Stavros Korokithakis was a major inspiration for this project.
 * [Karan Lyons](https://github.com/karanlyons/) and [Sascha Droste](https://github.com/pid/) for [MurmurHash3js](https://github.com/pid/murmurHash3js). 
 * [Zhuhongk](https://stackoverflow.com/users/2959866/zhuhongk) and [Nikolas](https://stackoverflow.com/users/710543/nikolas) for their code on [Is there a pure python implementation of MurmurHash?](https://stackoverflow.com/questions/13305290/is-there-a-pure-python-implementation-of-murmurhash?rq=1).
 * [Data files](https://github.com/pncnmnp/sthir/tree/master/sthir/resources) are derived from the Google Web Trillion Word Corpus, as described by Thorsten Brants and Alex Franz, and distributed by the Linguistic Data Consortium. Subsets of this corpus distributed by Peter Novig. Corpus editing and cleanup by Josh Kaufman.
