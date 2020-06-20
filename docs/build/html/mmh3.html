@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CLI module &#8212; Sthir 0.0.2 documentation</title>
+    <title>mmh3 module &#8212; Sthir 0.0.2 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -15,8 +15,8 @@
     <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Test module" href="Test.html" />
-    <link rel="prev" title="static_site_search" href="modules.html" />
+    <link rel="next" title="parse module" href="parse.html" />
+    <link rel="prev" title="generate_search module" href="generate_search.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -33,31 +33,12 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="module-CLI">
-<span id="cli-module"></span><h1>CLI module<a class="headerlink" href="#module-CLI" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-mmh3">
+<span id="mmh3-module"></span><h1>mmh3 module<a class="headerlink" href="#module-mmh3" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt id="CLI.chunk_size_arg">
-<code class="sig-prename descclassname">CLI.</code><code class="sig-name descname">chunk_size_arg</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">val</span></em><span class="sig-paren">)</span><a class="headerlink" href="#CLI.chunk_size_arg" title="Permalink to this definition">¶</a></dt>
-<dd><p>Validates the chunk_size for the arg parser</p>
-</dd></dl>
-
-<dl class="py function">
-<dt id="CLI.create_arg_parser">
-<code class="sig-prename descclassname">CLI.</code><code class="sig-name descname">create_arg_parser</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CLI.create_arg_parser" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a well-setup argument-parser object</p>
-</dd></dl>
-
-<dl class="py function">
-<dt id="CLI.dir_path">
-<code class="sig-prename descclassname">CLI.</code><code class="sig-name descname">dir_path</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#CLI.dir_path" title="Permalink to this definition">¶</a></dt>
-<dd><p>Validates path to the source folder</p>
-</dd></dl>
-
-<dl class="py function">
-<dt id="CLI.error_rate_arg">
-<code class="sig-prename descclassname">CLI.</code><code class="sig-name descname">error_rate_arg</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">val</span></em><span class="sig-paren">)</span><a class="headerlink" href="#CLI.error_rate_arg" title="Permalink to this definition">¶</a></dt>
-<dd><p>Validates the error_rate for the arg parser</p>
-</dd></dl>
+<dt id="mmh3.murmur3_x86_32">
+<code class="sig-prename descclassname">mmh3.</code><code class="sig-name descname">murmur3_x86_32</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key</span></em>, <em class="sig-param"><span class="n">seed</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mmh3.murmur3_x86_32" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 
@@ -81,12 +62,12 @@
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">static_site_search</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">CLI module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CLI.html">CLI module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Test.html">Test module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="convert_2p15.html">convert_2p15 module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="convert_byte.html">convert_byte module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generate_search.html">generate_search module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mmh3.html">mmh3 module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">mmh3 module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="parse.html">parse module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="scan.html">scan module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spectral_bloom_filter.html">spectral_bloom_filter module</a></li>
@@ -99,8 +80,8 @@
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
   <li><a href="modules.html">static_site_search</a><ul>
-      <li>Previous: <a href="modules.html" title="previous chapter">static_site_search</a></li>
-      <li>Next: <a href="Test.html" title="next chapter">Test module</a></li>
+      <li>Previous: <a href="generate_search.html" title="previous chapter">generate_search module</a></li>
+      <li>Next: <a href="parse.html" title="next chapter">parse module</a></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -135,7 +116,7 @@
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
-      <a href="_sources/CLI.rst.txt"
+      <a href="_sources/mmh3.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

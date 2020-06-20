@@ -1,9 +1,9 @@
 .. Sthir documentation master file, created by
-   sphinx-quickstart on Wed Jun 17 20:47:30 2020.
+   sphinx-quickstart on Sat Jun 20 10:05:40 2020.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Sthir's documentation
+Welcome to Sthir's documentation!
 =================================
 
 .. toctree::

@@ -1,0 +1,86 @@
+static\_site\_search package
+============================
+
+Submodules
+----------
+
+static\_site\_search.CLI module
+-------------------------------
+
+.. automodule:: static_site_search.CLI
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+static\_site\_search.Test module
+--------------------------------
+
+.. automodule:: static_site_search.Test
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+static\_site\_search.convert\_2p15 module
+-----------------------------------------
+
+.. automodule:: static_site_search.convert_2p15
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+static\_site\_search.convert\_byte module
+-----------------------------------------
+
+.. automodule:: static_site_search.convert_byte
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+static\_site\_search.generate\_search module
+--------------------------------------------
+
+.. automodule:: static_site_search.generate_search
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+static\_site\_search.mmh3 module
+--------------------------------
+
+.. automodule:: static_site_search.mmh3
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+static\_site\_search.parse module
+---------------------------------
+
+.. automodule:: static_site_search.parse
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+static\_site\_search.scan module
+--------------------------------
+
+.. automodule:: static_site_search.scan
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+static\_site\_search.spectral\_bloom\_filter module
+---------------------------------------------------
+
+.. automodule:: static_site_search.spectral_bloom_filter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: static_site_search
+   :members:
+   :undoc-members:
+   :show-inheritance:

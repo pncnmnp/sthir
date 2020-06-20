@@ -5,8 +5,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>spectral_bloom_filter module &#8212; Sthir 1 documentation</title>
-    <link rel="stylesheet" href="_static/pyramid.css" type="text/css" />
+    <title>spectral_bloom_filter module &#8212; Sthir 0.0.2 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
@@ -16,35 +16,20 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="scan module" href="scan.html" />
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
-<!--[if lte IE 6]>
-<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
-<![endif]-->
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head><body>
-
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="scan.html" title="scan module"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Sthir 1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">static_site_search</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">spectral_bloom_filter module</a></li> 
-      </ul>
-    </div>  
+  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="module-spectral_bloom_filter">
@@ -96,7 +81,7 @@
 </div>
 <dl class="py method">
 <dt id="spectral_bloom_filter.Spectral_Bloom_Filter.create_filter">
-<code class="sig-name descname">create_filter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tokens</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">m</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">chunk_size</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">4</span></em>, <em class="sig-param"><span class="n">no_hashes</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">5</span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'minimum'</span></em>, <em class="sig-param"><span class="n">to_bitarray</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">bitarray_path</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'document.bin'</span></em><span class="sig-paren">)</span> &#x2192; &lt;module ‘bitarray’ from ‘/home/parthparikh/.local/lib/python3.6/site-packages/bitarray/__init__.py’&gt;<a class="headerlink" href="#spectral_bloom_filter.Spectral_Bloom_Filter.create_filter" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_filter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tokens</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">m</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">chunk_size</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">4</span></em>, <em class="sig-param"><span class="n">no_hashes</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">5</span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'minimum'</span></em>, <em class="sig-param"><span class="n">to_bitarray</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">bitarray_path</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'document.bin'</span></em><span class="sig-paren">)</span> &#x2192; bitarray.bitarray<a class="headerlink" href="#spectral_bloom_filter.Spectral_Bloom_Filter.create_filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a spectral bloom filter.</p>
 <div class="line-block">
 <div class="line">Paper:  SIGMOD ‘03: Proceedings of the 2003 ACM SIGMOD international conference on Management of data, June 2003 Pages 241–252</div>
@@ -184,7 +169,7 @@ Method returns - {‘00’: ‘01’, ‘01’: ‘10’, ‘10’: ‘11’, �
 
 <dl class="py method">
 <dt id="spectral_bloom_filter.Spectral_Bloom_Filter.initialize_string">
-<code class="sig-name descname">initialize_string</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#spectral_bloom_filter.Spectral_Bloom_Filter.initialize_string" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">initialize_string</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#spectral_bloom_filter.Spectral_Bloom_Filter.initialize_string" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns string of zeros of width “length”.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -221,22 +206,48 @@ k for number of hash functions we should apply (index 1)</p>
 </div>
 
 
-            <div class="clearer"></div>
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="scan.html"
-                        title="previous chapter">scan module</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/spectral_bloom_filter.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
+<h1 class="logo"><a href="index.html">Sthir</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">static_site_search</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="CLI.html">CLI module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Test.html">Test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="convert_2p15.html">convert_2p15 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="convert_byte.html">convert_byte module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generate_search.html">generate_search module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmh3.html">mmh3 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parse.html">parse module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scan.html">scan module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">spectral_bloom_filter module</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">static_site_search</a><ul>
+      <li>Previous: <a href="scan.html" title="previous chapter">scan module</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
 <div id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
@@ -247,30 +258,32 @@ k for number of hash functions we should apply (index 1)</p>
     </div>
 </div>
 <script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="scan.html" title="scan module"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Sthir 1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="modules.html" >static_site_search</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">spectral_bloom_filter module</a></li> 
-      </ul>
+    <div class="footer">
+      &copy;2020, Parth Parikh, Mrunank Mistry, Dhruvam Kothari.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/spectral_bloom_filter.rst.txt"
+          rel="nofollow">Page source</a>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Parth Parikh, Mrunank Mistry, Dhruvam Kothari.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.1.
-    </div>
+
+    
+
+    
   </body>
 </html>

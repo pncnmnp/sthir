@@ -1,0 +1,7 @@
+mmh3 module
+===========
+
+.. automodule:: mmh3
+   :members:
+   :undoc-members:
+   :show-inheritance:
