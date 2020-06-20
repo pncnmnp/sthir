@@ -34,14 +34,56 @@ sthir -h
 ```
 If you see the help messages without any error then the installation was successful.
 
-## Documentation
-Here is a working demo - 
+## Quickstart
 
-![terminal-output](https://github.com/pncnmnp/sthir/blob/master/demo.gif)
+### Help message:
+```
+usage: sthir [-h] [-e ErrorRate] [-s Counter_size] [-l] [-ds] path
+
+Creates a Spectral Bloom filter(SBF) for .html files in the specified
+directory.
+
+positional arguments:
+  path             Path to source directory for creating the filter
+
+optional arguments:
+  -h, --help       show this help message and exit
+  -e ErrorRate     Error_rate for the filter Range:[0.0,1.0] Default:0.01
+  -s Counter_size  Size in bits of each counter in filter Range:[1,10]
+                   Default:4(recommended)
+  -l, --lemmetize  Enable Lemmetization
+  -ds              Disable stopword removal from files (not recommended)
+```
+
+### Basic
+
+To scan your HTML files and generate a static search webpage, use the command:
+`sthir <your-path-name>`
+
+By default, a `search.html` file, containing the static search functionality will be generated.
+
+### Error rate
+You can change the error rate of the generated Spectral Bloom Filter using:
+`sthir <your-path-name> -e <error-rate>`
+
+We recommend an error rate of `0.01`. Having a high error rate is likely to produce more false positive results (i.e. it will recommend URLs which do not contain the search word(s)).
+
+### Counter size
+By default, our counters can have a maximum count of 16 (`counter_size=4`). Counters are used by Spectral Bloom Filters to keep track of the number of times a particular hash has been indexed in the bloom filter. So by default, we keep a count till 16. However, you can chnage the counter size using: `sthir <your-path-name> -s <counter-size>`.
+
+**Note:** 
+* `counter_size` of `x` can store upto a maximum count `2^x`. For example: `counter_size` of 3, has a maximum count of `2^3` or `8`.
+* As Spectral Bloom Filters are a **probabilistic** data structure, they cannot be used to accurately determine the upper bound of each word's hashes. They keep a track of the lower bound of a word's hashes (primarily using *Minimum Increment* method).
+
+## Documentation
 
 **Our entire documentation is available in**:
 * [PDF](https://github.com/pncnmnp/sthir/blob/master/docs/build/latex/sthir.pdf)
 * [HTML](https://github.com/pncnmnp/sthir/tree/master/docs/build/html)
+
+Here is a working demo - 
+
+![terminal-output](https://github.com/pncnmnp/sthir/blob/master/demo.gif)
 
 ## License
 
