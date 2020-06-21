@@ -10,6 +10,9 @@ from typing import Iterable
 
 import pkgutil
 import io
+import csv
+
+from os.path import isfile 
 
 """"
 Step1: Create a Tester object by passing your filename and parameters
@@ -130,7 +133,32 @@ class Tester:
                         # to the max_word_count. So SBF was correct!
                         continue
                     else:
-                        wrong_count += 1 
+                        wrong_count += 1
+
+        # Headers for the csv file                
+        headers = [
+            'Filename','Inserted Words' , 'Wrongly Counted' , 'Error for inserted words'
+             'New words', 'False Positives', 'Error for false Positives'
+        ]
+
+        #Entry for the csv file
+        entry = [
+
+                self.doc_name,seen_words, wrong_count , seen_words / wrong_count ,
+                no_of_unseen_words , fp_count ,fp_count / no_of_unseen_words
+             ]
+        if isfile( 'stats.csv' ):
+            with open(r'name', 'a') as f:   
+                writer = csv.writer(f)
+                writer.writerow(entry)
+        else:
+            with open('stats.csv', 'w',newline='') as f:
+                writer = csv.writer(f)
+                writer.writerow(headers)
+                writer.writerow(entry)
+
+
+
 
         self.logger.warning( 
             "\tNo of words in word-dictionary: {}\n".format( no_of_words ) +
