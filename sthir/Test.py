@@ -14,7 +14,7 @@ import io
 """"
 Step1: Create a Tester object by passing your filename and parameters
 Step2: Call the generate_Filter() method 
-Step3: Call test_filter() method
+Step3: Call test_filter_for_FP() method
 Step4: Check bloomfilter.log in current directory
 """
 
@@ -81,8 +81,7 @@ class Tester:
 
 
     def read_dict_words(self):
-        """
-        Reads english_dict.txt file and creates a list of words.
+        """Reads english_dict.txt file and creates a list of words.
         :returns: A list of words containing the words in the dictionary.         
         """
         dataString = pkgutil.get_data( "sthir", "resources/english_dict.txt")
@@ -102,6 +101,7 @@ class Tester:
         testing_words = self.read_dict_words()
 
         no_of_words = len(testing_words)
+        max_word_count = 2 ** self.chunk_size - 1 # max_count the counters can read
 
         hash_funcs = Hash_Funcs(k=self.k, m= self.m)
 
@@ -115,8 +115,8 @@ class Tester:
             #Querying the filter
             hashed_indices = hash_funcs.get_hashes(word)
             values = [ int(self.counter[i],2) for i in hashed_indices]
-            SBF_ans = min(values) #Filter's prediction
-            current_count = word_counts[word]
+            SBF_ans = min(values)               #Filter's prediction
+            current_count = word_counts[word] #Actual count in the document
 
             if current_count == 0:                  # word is absent in the filter
                 no_of_unseen_words += 1
@@ -124,9 +124,14 @@ class Tester:
             else:                                   #word was inserted
                 seen_words += 1
                 if SBF_ans != current_count:
-                    wrong_count += 1 
+                    if SBF_ans == max_word_count and current_count >= max_word_count:
+                        # The no of occurences of the word is greater than or equal to 
+                        # the max_word_count and the  SBF prediction is exactly equal 
+                        # to the max_word_count. So SBF was correct!
+                        continue
+                    else:
+                        wrong_count += 1 
 
-            
         self.logger.warning( 
             "\tNo of words in word-dictionary: {}\n".format( no_of_words ) +
             "\tNo of unseen words in dictionary: {}\n".format( no_of_unseen_words ) +

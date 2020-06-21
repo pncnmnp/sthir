@@ -9,6 +9,7 @@ from typing import List , Iterable
 
 
 class Hash_Funcs:
+    """Class which creates the hash functions required for the Spectral Bloom filters."""
     def __init__( self, k:int, m:int):
         """
         Creates hash functions given m and k
@@ -198,4 +199,3 @@ class Spectral_Bloom_Filter:
         m = (-n*log(p) / (log(2)**2))
         k = (m/n)*log(2)
         return ( ceil(m), round(k))
-

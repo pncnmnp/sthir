@@ -1,6 +1,8 @@
 import sthir.spectral_bloom_filter as spectral_bloom_filter
 import sthir.parse as parse
+
 import sthir.convert_2p15 as convert_2p15
+# import convert_2p15
 import base64
 import glob
 import json
@@ -48,7 +50,8 @@ def generate_bloom_filter(file, false_positive=0.1, chunk_size=4, remove_stopwor
         "k": k,
         "chunk_size": chunk_size,
         "bin_file": file.replace(".html", ".bin"),
-        "title": title
+        "title": title,
+        "no_items": no_items
     }
 
 def create_search_page(directory, output_file="search.html", false_positive=0.1, chunk_size=4, remove_stopwords=True):
@@ -83,7 +86,7 @@ def create_search_page(directory, output_file="search.html", false_positive=0.1,
         base2p15_arrs.append([base2p15_encode(bit_arr.to01()), 
                                 document["chunk_size"], 
                                 document["m"], 
-                                document["k"], document["bin_file"], document["title"]])
+                                document["k"], document["bin_file"], document["title"], document["no_items"]])
         print("Scanned: {}".format(document["bin_file"]))
 
     with open(output_file, "w" ,encoding='utf8') as f:
@@ -104,5 +107,5 @@ def download_urls(json_file, output_file=""):
         print("Saved at: " + output_file+response.url.replace("/","")+"a.html")
 
 if __name__ == "__main__":
-    # create_search_page(".", output_file="out.html", false_positive=0.01)
-    download_urls("a.json")
+    create_search_page(".", output_file="search.html", false_positive=0.01)
+    # download_urls("a.json")

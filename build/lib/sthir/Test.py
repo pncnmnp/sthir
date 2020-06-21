@@ -1,6 +1,5 @@
 from collections import Counter
 
-#To be removed
 from logging import Formatter,FileHandler,getLogger
 from logging import DEBUG 
 
@@ -12,7 +11,6 @@ from typing import Iterable
 import pkgutil
 import io
 
-
 """"
 Step1: Create a Tester object by passing your filename and parameters
 Step2: Call the generate_Filter() method 
@@ -22,7 +20,7 @@ Step4: Check bloomfilter.log in current directory
 
 
 def create_logger():
-    """Returns a logger object"""
+    """Returns a well setup logger object for logging information."""
     logger = getLogger(name='SBF')
     logger.setLevel(DEBUG)
 
@@ -40,16 +38,28 @@ def create_logger():
 class Tester:
     """Class for testing the spectal bloom filters"""
     def __init__(self, doc_name:str , chunk_size:int = 4 , fp_rate:int = 0.1):
-        """'doc_name' is the name or path to the file you which to test on."""
+        """
+        Constructs a Tester object for the Spectral Bloom Filters.
+        :param doc_name: Name or Path to the File
+        :param chunk_size: Size in bits of each counter in the Spectal Bloom Filter.
+                           *(Default - 4)*
+        :param fp_rate: False_postive rate for the Spectral Bloom Filter.
+                           *(Default - 0.1)*                          
+        :returns: Object of Tester class
+        """
         self.doc_name = doc_name
         self.chunk_size = chunk_size
         self.fp_rate = fp_rate
         self.logger  = create_logger()
 
 
-    def generate_Filter(self , remove_stopwords , lemmetize):
+    def generate_Filter(self , remove_stopwords:bool , lemmetize:bool):
         """
-        Returns the counter and params for the specified document in Testing Folder
+        Constructs a Tester object for the Spectral Bloom Filters.
+        :param doc_name: Name or Path to the File
+        :param remove_stopwords: Boolean value for enabling/disabling stopword removal.
+        :param lemmetize: Boolean value for enabling/disabling lemmetization of words.
+        :returns: None
         """
         self.lemmetize = lemmetize
 
@@ -71,7 +81,10 @@ class Tester:
 
 
     def read_dict_words(self):
-        """Reads and returns a list of words in the english_dict.txt file"""
+        """
+        Reads english_dict.txt file and creates a list of words.
+        :returns: A list of words containing the words in the dictionary.         
+        """
         dataString = pkgutil.get_data( "sthir", "resources/english_dict.txt")
         l = [ str(i)[2:-1] for i in dataString.splitlines()]
         l = [ word.strip() for word in l]
@@ -81,7 +94,9 @@ class Tester:
         return l
 
     def test_filter_for_FP(self):
-        """Tests and logs the stats after testing the provided file"""
+        """Tests and logs the stats after testing the provided file.
+        :returns: None
+        """
         word_counts = Counter(self.tokens)
 
         testing_words = self.read_dict_words()
