@@ -9,6 +9,8 @@
 [![sthir][sthir-img]][sthir-url]
 [![docs][docs-img]][docs-url]
 [![python][python-img]][python-url]
+[![Downloads](https://pepy.tech/badge/sthir)](https://pepy.tech/project/sthir)
+[![Downloads](https://pepy.tech/badge/sthir/month)](https://pepy.tech/project/sthir/month)
 [![MIT License][license-image]][license-url]
 
 **Sthir** can create *memory efficient* search feature for your static website. Sthir is equipped with an *user friendly command-line interface*. In two steps you can build a working search page for your website!
