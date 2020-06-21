@@ -98,8 +98,9 @@ class Tester:
         )
  
 
-    def test_filter(self, doc_path:str):
-        """Tests and logs the stats after testing the single provided file.
+    def test_filter_for_file(self, doc_path:str):
+        """Tests and logs the stats after testing the single provided file in stat.csv and
+        bloomfilter.log.
         :returns: None
         """
         if not isfile(doc_path):
@@ -180,16 +181,17 @@ class Tester:
 
 
     def test_dir(self, dir_path:str)-> None :
-        """Tests and creates stats.csv and common_stats.txt 
-        file providing stats after testing all the html files in directory against words in the directory.
+        """Tests and creates *stats.csv* and *common_stats.txt* file providing stats after testing 
+        all the html files in directory against words in the directory.
+        Also logs few details in bloomfilter.log
         :returns: None
         """
         if not isdir(dir_path):
             raise Exception(f"{dir_path} is not a valid directory.")
 
         abs_dir_path = abspath( dir_path )
-        csv_file = join(  abs_dir_path , 'stats.csv')
-        txt_file=  join(  abs_dir_path , 'common_stats.csv')
+        csv_file = join(  abs_dir_path , f'{dir_path}_{self.fp_rate}.csv')
+        txt_file=  join(  abs_dir_path , f'{dir_path}_{self.fp_rate}common_stats.csv')
 
         commomn_stats = f'Chunk size:{self.chunk_size}\n' + f'Error rate:{self.fp_rate}'
 
