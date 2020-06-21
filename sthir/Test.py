@@ -57,10 +57,8 @@ class Tester:
         """
         Constructs a Tester object for the Spectral Bloom Filters.
         :param doc_name: Name or Path to the File
-        :param chunk_size: Size in bits of each counter in the Spectal Bloom Filter.
-                           *(Default - 4)*
-        :param fp_rate: False_postive rate for the Spectral Bloom Filter.
-                           *(Default - 0.1)*                          
+        :param remove_stopwords: Boolean value for enabling/disabling stopword removal.
+        :param lemmetize: Boolean value for enabling/disabling lemmetization of words.
         :returns: None
         """
         self.lemmetize = lemmetize
@@ -83,7 +81,10 @@ class Tester:
 
 
     def read_dict_words(self):
-        """Reads and returns a list of words in the english_dict.txt file"""
+        """
+        Reads english_dict.txt file and creates a list of words.
+        :returns: A list of words containing the words in the dictionary.         
+        """
         dataString = pkgutil.get_data( "sthir", "resources/english_dict.txt")
         l = [ str(i)[2:-1] for i in dataString.splitlines()]
         l = [ word.strip() for word in l]
@@ -93,7 +94,9 @@ class Tester:
         return l
 
     def test_filter_for_FP(self):
-        """Tests and logs the stats after testing the provided file"""
+        """Tests and logs the stats after testing the provided file.
+        :returns: None
+        """
         word_counts = Counter(self.tokens)
 
         testing_words = self.read_dict_words()

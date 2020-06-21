@@ -199,4 +199,3 @@ class Spectral_Bloom_Filter:
         m = (-n*log(p) / (log(2)**2))
         k = (m/n)*log(2)
         return ( ceil(m), round(k))
-
