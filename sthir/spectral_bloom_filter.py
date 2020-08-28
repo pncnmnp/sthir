@@ -19,7 +19,7 @@ class Hash_Funcs:
         """
         self.k = k
         self.hash_funcs_list = []
-        for i in range(self.k):
+        for _ in range(self.k):
             self.hash_funcs_list.append( lambda x,s : mmh3_hash( x , seed = s) % m )
 
     def get_hashes(self, word:str )->list:
@@ -59,9 +59,6 @@ class Spectral_Bloom_Filter:
     |  Paper: SIGMOD '03: Proceedings of the 2003 ACM SIGMOD international conference on Management of data, June 2003 Pages 241–252
     |  DOI: https://doi.org/10.1145/872757.872787
     """
-
-    def __init__(self,error_rate:float=0.01):
-        self.error_rate = error_rate
 
     def initialize_string(self, length:int):
         """

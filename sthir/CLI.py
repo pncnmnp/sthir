@@ -3,14 +3,14 @@ from pprint import pprint
 from os.path import isdir,abspath
 import sthir.scan as scan
 
-def dir_path(path):
+def _dir_path(path):
     """Validates path to the source folder"""
     if isdir(path):
         return path
     else:
         raise argparse.ArgumentTypeError(f"'{abspath(path)}' is not a valid directory path.")
 
-def error_rate_arg(val):
+def _error_rate_arg(val):
     """Validates the error_rate for the arg parser"""
     try:
         val = float(val)
@@ -21,7 +21,7 @@ def error_rate_arg(val):
         return val
     raise argparse.ArgumentTypeError(f"{val} not in range [0.0, 1.0]")
 
-def chunk_size_arg(val):
+def _chunk_size_arg(val):
     """Validates the chunk_size for the arg parser"""
     try:
         val = int(val)
@@ -37,8 +37,11 @@ def chunk_size_arg(val):
     else:
         raise argparse.ArgumentTypeError(f"{val} is too high")
 
-def create_arg_parser():
-    """Returns a well-setup argument-parser object"""
+def sthir_arg_parser():
+    """
+    The CLI function for sthir.
+    """
+
     parser = argparse.ArgumentParser(
         description='Creates a Spectral Bloom filter(SBF) for .html files in the specified directory.'
     )
@@ -46,14 +49,14 @@ def create_arg_parser():
     #The directory argument - posititonal argument
     parser.add_argument(
         'path', 
-        type=dir_path, 
+        type=_dir_path, 
         help='Path to source directory for creating the filter'
     )
 
     #Error_rate
     parser.add_argument(
         '-e' ,
-        type = error_rate_arg,
+        type = _error_rate_arg,
         metavar="ErrorRate",
         dest='error_rate', 
         default= 0.01, 
@@ -63,7 +66,7 @@ def create_arg_parser():
     #Counter_size
     parser.add_argument(
         '-s' ,
-        type = chunk_size_arg,
+        type = _chunk_size_arg,
         metavar="Counter_size",
         dest='chunk_size', 
         default= 4, 
@@ -88,6 +91,13 @@ def create_arg_parser():
 
     args = vars(parser.parse_args()) # Convert to dictionary
     # args- Arguments which are needed to create the SB filter.
-    scan.create_search_page(args["path"], output_file="search.html", false_positive=args["error_rate"], chunk_size=args["chunk_size"], remove_stopwords=args["remove_stopwords"])
+
+    scan.create_search_page(
+        args["path"], 
+        output_file="search.html", 
+        false_positive=args["error_rate"],
+        chunk_size=args["chunk_size"], 
+        remove_stopwords=args["remove_stopwords"]
+    )
 
 

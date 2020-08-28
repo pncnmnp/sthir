@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="sthir", 
-    version="0.0.1",
+    version="0.0.2",
     author="Parth Parikh, Dhruvam Kothari,Mrunank Mistry",
     author_email="mrunankmistry52@gmail.com",
     description="A package for creating Spectral Bloom filters for static sites",
@@ -26,8 +26,9 @@ setuptools.setup(
     include_package_data=True,
     entry_points ={ 
         'console_scripts': [ 
-            'sthir = sthir.CLI:create_arg_parser'
+            'sthir = sthir.CLI:sthir_arg_parser'
         ] 
     }, 
-    zip_safe=False
+    zip_safe=False,
+    keywords = ['Spectral Bloom Filters','Static Website','Searching']
 )

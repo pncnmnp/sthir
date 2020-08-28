@@ -15,16 +15,12 @@ import csv
 from os.path import isfile , abspath , dirname ,join, isdir
 from os import listdir
 
-""""
-Step1: Create a Tester object by passing your filename and parameters
-Step2: Call the generate_Filter() method 
-Step3: Call test_filter_for_FP() method
-Step4: Check bloomfilter.log in current directory
-"""
 
-
-def create_logger():
-    """Returns a well setup logger object for logging information."""
+def _create_logger():
+    """
+    Returns a well setup logger object for logging the statistics after testing the 
+    Bloom Filters.
+    """
     logger = getLogger(name='SBF')
     logger.setLevel(DEBUG)
 
@@ -40,32 +36,61 @@ def create_logger():
     return logger
 
 class Tester:
-    """Class for testing the spectal bloom filters"""
+    """
+    Class for testing the accuracy of Spectal Bloom Filters on a large
+    list of frequently used English words.
+
+    Parameters
+    ----------
+    chunk_size: int, optional
+        Size in bits of each counter in the Spectal Bloom Filter.
+        Default ``14``.
+    fp_rate: float, optional
+        False_postive rate for the Spectral Bloom Filter.
+        Default ``0.1``.
+    remove_stopwords: bool, optional
+        Boolean flag for enabling/disabling stopword removal.
+        Default ``True`.
+    lemmetize: bool, optional
+        Boolean flag for enabling/disabling lemmetization of words.
+        Default ``True`.
+
+    Example
+    --------
+        >>> from sthir.test import Tester
+        >>> obj = Tester()
+        >>> # Test on single files
+        >>> obj.test_filter_for_file('sample.html') 
+        Size of the filter is: 1000 bytes
+        >>> # Test on an entire directory
+        >>> obj.test_dir('folder_with_html_files') 
+        Size of the filter is: 1000 bytes
+        Size of the filter is: 2000 bytes
+        ...   
+    """
+
     def __init__(self, chunk_size:int = 4 , fp_rate:int = 0.1,remove_stopwords:bool=True , lemmetize:bool=False):
-        """
-        Constructs a Tester object for the Spectral Bloom Filters.
-        :param chunk_size: Size in bits of each counter in the Spectal Bloom Filter.
-                           *(Default - 4)*
-        :param fp_rate: False_postive rate for the Spectral Bloom Filter.
-                           *(Default - 0.1)* 
-        :param remove_stopwords: Boolean value for enabling/disabling stopword removal.
-        :param lemmetize: Boolean value for enabling/disabling lemmetization of words.                         
-        :returns: Object of Tester class
-        """
-        #Set all four varaibles
+
+        #Set all four necessary input for SBF
         self.chunk_size = chunk_size
         self.fp_rate = fp_rate
         self.lemmetize = lemmetize
         self.remove_stopwords = remove_stopwords
-        self.max_word_count = 2 ** self.chunk_size - 1 # max_count the counters can read
 
-        self.logger  = create_logger()
-        self.read_dict_words()
+        # max_count the counters can count upto
+        self.max_word_count = 2 ** self.chunk_size - 1 
+
+        # logger object
+        self.logger  = _create_logger()
+
+        # Load the testing_words
+        self.testing_words = self.__read_dict_words()
         self.no_of_words = len(self.testing_words)
 
-    def read_dict_words(self):
+    def __read_dict_words(self):
         """
-        Reads english_dict.txt file in resources and creates a list of words.
+        Reads english_dict.txt file from the resources and creates a list of words
+        on which the SBF(s) will be tested.
         """
         dataString = pkgutil.get_data( "sthir", "resources/english_dict.txt")
         l = [ str(i)[2:-1] for i in dataString.splitlines()]
@@ -73,13 +98,15 @@ class Tester:
         if self.lemmetize: 
             lemmatizer = WordNetLemmatizer() 
             l = [ lemmatizer.lemmatize(word) for word in l ]
-        self.testing_words = l
+        return l
         
-    def generate_Filter(self, doc_path:str )->None:
+    def __generate_Filter(self, doc_path:str )->None:
         """
         Generates a Spectral Bloom filter for the specified document.
-        :param doc_name: Name or Path to the File
-        :returns: None
+        Parameters
+        ----------
+        doc_name: str
+            Path of the html file whose .
         """
         self.doc_path = doc_path
 
@@ -96,17 +123,16 @@ class Tester:
         self.counter =  self.spectral.create_filter( self.tokens, self.m, self.chunk_size, self.k,
             method="minimum", to_bitarray=False
         )
- 
 
     def test_filter_for_file(self, doc_path:str):
-        """Tests and logs the stats after testing the single provided file in stat.csv and
+        """
+        Tests and logs the stats after testing the single provided file in stats.csv and
         bloomfilter.log.
-        :returns: None
         """
         if not isfile(doc_path):
             raise Exception(f"{doc_path} file does not exist.")
 
-        self.generate_Filter(doc_path)
+        self.__generate_Filter(doc_path)
 
         word_counts = Counter(self.tokens)
 
@@ -132,7 +158,7 @@ class Tester:
                 if SBF_ans != current_count:
                     if SBF_ans == self.max_word_count and current_count >= self.max_word_count:
                         # The no of occurences of the word is greater than or equal to 
-                        # the max_word_count and the  SBF prediction is exactly equal 
+                        # the max_word_count and the SBF prediction is exactly equal 
                         # to the max_word_count. So SBF was correct!
                         continue
                     else:
@@ -145,7 +171,7 @@ class Tester:
              'New words', 'False Positives', 'FP_Error'
         ]
 
-        #Entry for the csv file
+        # Single Entry for the csv file
         entry = [
                 self.doc_path, self.fp_rate , self.k , self.chunk_size, self.m ,
                 seen_words, wrong_count , wrong_count / seen_words,
@@ -155,7 +181,6 @@ class Tester:
         file_path = abspath(self.doc_path)
 
         csv_file = join(  dirname(file_path) , 'stats.csv')
-        # print(csv_file)
 
         if isfile( csv_file ): 
             with open(csv_file, 'a') as f:   
@@ -167,7 +192,7 @@ class Tester:
                 writer.writerow(headers)
                 writer.writerow(entry)
 
-
+        # Logging the stats in the log file.
         self.logger.warning( 
             "\tNo of words in word-dictionary: {}\n".format( self.no_of_words ) +
             "\tNo of unseen words in dictionary: {}\n".format( no_of_unseen_words ) +
@@ -179,32 +204,38 @@ class Tester:
             "\tTotal Error: {}\n".format( (fp_count+wrong_count) / self.no_of_words )  
         )
 
-
     def test_dir(self, dir_path:str)-> None :
-        """Tests and creates *stats.csv* and *common_stats.txt* file providing stats after testing 
-        all the html files in directory against words in the directory.
-        Also logs few details in bloomfilter.log
-        :returns: None
+        """
+        Tests and creates *stats.csv* and *common_stats.txt* file providing stats after testing 
+        all the html files in directory against the test words in a large dictionary.
         """
         if not isdir(dir_path):
             raise Exception(f"{dir_path} is not a valid directory.")
 
         abs_dir_path = abspath( dir_path )
-        csv_file = join(  abs_dir_path , f'{dir_path}_{self.fp_rate}.csv')
-        txt_file=  join(  abs_dir_path , f'{dir_path}_{self.fp_rate}common_stats.csv')
+        csv_file_name = f'{dir_path}_fp_{self.fp_rate}_size_{self.chunk_size}'
+        csv_file = join(  abs_dir_path , f'{csv_file_name}.csv')
+        txt_file=  join(  abs_dir_path , f'{csv_file_name}_common_stats.csv')
 
         commomn_stats = f'Chunk size:{self.chunk_size}\n' + f'Error rate:{self.fp_rate}'
 
         with open(txt_file,'w',encoding='utf8') as txtfile:
             txtfile.write(commomn_stats)
-        
+
+        # Headers for the csv file                
+        headers = [
+            'Filename', 'No_of_tokens(n)' ,'No_of_hashes(k)' , 'Filter-size(m)' , 
+            'Inserted Words in dict' , 'Count_Mismatches' , 'Error in counts',
+            'New words', 'False Positives', 'FP_Error'
+        ]
+
 
         for current_file in listdir(abs_dir_path):
 
             if current_file.endswith(".html"):
                 current_file_path = join(  abs_dir_path , current_file )
 
-                self.generate_Filter( current_file_path)
+                self.__generate_Filter( current_file_path)
                 hash_funcs = Hash_Funcs(k=self.k, m= self.m)
 
                 word_counts = Counter(self.tokens)
@@ -235,16 +266,9 @@ class Tester:
                             else:
                                 wrong_count += 1
 
-                # Headers for the csv file                
-                headers = [
-                    'Filename', 'No_of_hashes(k)' , 'Filter-size(m)' , 
-                    'Inserted Words in dict' , 'Count_Mismatches' , 'Error in counts',
-                    'New words', 'False Positives', 'FP_Error'
-                ]
-
                 #Entry for the csv file
                 entry = [
-                        current_file, self.k , self.m ,
+                        current_file, self.n, self.k , self.m ,
                         seen_words, wrong_count , round( wrong_count / seen_words,10),
                         no_of_unseen_words , fp_count ,round(fp_count / no_of_unseen_words , 10)
                     ]
