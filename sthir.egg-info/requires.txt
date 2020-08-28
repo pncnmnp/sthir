@@ -1,6 +1,0 @@
-nltk
-bitarray
-bs4
-newspaper3k
-lxml
-requests
