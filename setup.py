@@ -15,7 +15,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     install_requires=[
           'nltk', 'bitarray' ,'bs4','newspaper3k','lxml',
-          'requests'
+          'requests' , 'pytest'
       ],
     classifiers=[
         "Programming Language :: Python :: 3",
