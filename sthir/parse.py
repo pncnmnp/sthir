@@ -50,7 +50,7 @@ def extract_html_bs4(html_file_path: str,
     # Remove stopwords
     if remove_stopwords:
         chunks = [
-            chunk for chunk in chunks if chunk not in list(invalid_words)
+            chunk for chunk in chunks if chunk not in invalid_words
         ]
 
     #Lemmatization
@@ -97,7 +97,7 @@ def extract_html_newspaper(html_file: str,
     # Remove stopwords
     if remove_stopwords:
         chunks = [
-            chunk for chunk in chunks if chunk not in list(invalid_words)
+            chunk for chunk in chunks if chunk not in invalid_words
         ]
 
     #Lemmatization
