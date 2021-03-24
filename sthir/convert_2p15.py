@@ -1,4 +1,3 @@
-from bitarray import bitarray
 from sthir.generate_search import base2p15_encode
 
 HTML_TEMPLATE = {
@@ -111,7 +110,7 @@ HTML_TEMPLATE = {
                 function get_document_object(documents) {
                     for (var document=0; document<documents.length; document++) {
                         bit_arrs.push(new bitArray(documents[document][0], documents[document][1], documents[document][2], documents[document][3]));
-                        urls.push(documents[document][4].replace(".bin", ".html"));
+                        urls.push(documents[document][4]);
                         titles.push(documents[document][5]);
                     }
                     return bit_arrs;
@@ -154,18 +153,3 @@ HTML_TEMPLATE = {
         </html>
         """
 }
-if __name__ == "__main__":
-    base2p15_arrs = list()
-    documents = [["document.bin", 4, 14474, 3], ["A simple way to get more value from metrics.bin", 4, 11086, 3]]
-    for document in documents:
-        bit_arr = bitarray()
-        with open(document[0], "rb") as f:
-            bit_arr.fromfile(f)
-        base2p15_arrs.append([base2p15_encode(bit_arr.to01()), 
-                                document[1], 
-                                document[2], 
-                                document[3], document[0]])
-
-    with open("output_2p15.html", "w") as f:
-        f.write(HTML_TEMPLATE["HEAD"])
-        f.write(HTML_TEMPLATE["TAIL"].format(base2p15_arrs))

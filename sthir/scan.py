@@ -6,7 +6,6 @@ from math import log
 
 import lxml.html
 import requests
-from bitarray import bitarray
 
 import convert_2p15 as convert_2p15
 import parse as parse
@@ -46,18 +45,18 @@ def generate_bloom_filter(file,
 
     title = lxml.html.parse(file).find(".//title").text
 
-    sbf = spectral.create_filter(tokens=tokens,
-                                 chunk_size=chunk_size,
-                                 p=false_positive,
-                                 to_bitarray=True,
-                                 bitarray_path=file.replace(".html", ".bin"))
+    sbf = spectral.create_filter(
+        tokens=tokens,
+        chunk_size=chunk_size,
+        p=false_positive,
+    )
     m, n = len(sbf), len(tokens)
     k = round((m / n) * log(2))  # From spectral_bloom_filter.optimal_m_k
     return {
         "m": m,
         "k": k,
         "chunk_size": chunk_size,
-        "bin_file": file.replace(".html", ".bin"),
+        "sbf": sbf,
         "title": title,
         "no_items": n,
     }
@@ -87,29 +86,23 @@ def create_search_page(directory,
     """
     files = get_all_html_files(directory)
     bloom_meta = list()
+    search_index = []
     for file in files:
-        bloom_meta.append(
-            generate_bloom_filter(file,
-                                  false_positive=false_positive,
-                                  chunk_size=chunk_size,
-                                  remove_stopwords=remove_stopwords))
+        document = generate_bloom_filter(file,
+                                         false_positive=false_positive,
+                                         chunk_size=chunk_size,
+                                         remove_stopwords=remove_stopwords)
 
-    base2p15_arrs = list()
-    for document in bloom_meta:
-        bit_arr = bitarray()
-        with open(document["bin_file"], "rb") as f:
-            bit_arr.fromfile(f)
-
-        base2p15_arrs.append([
-            base2p15_encode(bit_arr.to01()), document["chunk_size"],
-            document["m"], document["k"], document["bin_file"],
-            document["title"], document["no_items"]
+        search_index.append([
+            base2p15_encode("".join(document["sbf"])), document["chunk_size"],
+            document["m"], document["k"], file, document["title"],
+            document["no_items"]
         ])
-        print("Scanned: {}".format(document["bin_file"]))
+        print("Scanned: {}".format(file))
 
     with open(output_file, "w", encoding='utf8') as f:
         f.write(convert_2p15.HTML_TEMPLATE["HEAD"])
-        f.write(convert_2p15.HTML_TEMPLATE["TAIL"].format(base2p15_arrs))
+        f.write(convert_2p15.HTML_TEMPLATE["TAIL"].format(search_index))
 
 
 def download_urls(json_file, output_file=""):
