@@ -1,5 +1,6 @@
 from bitarray import bitarray
-from sthir.generate_search import base2p15_encode
+
+from generate_search import base2p15_encode
 
 HTML_TEMPLATE = {
     "HEAD":

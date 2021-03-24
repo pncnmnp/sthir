@@ -4,7 +4,7 @@ from typing import Counter, Iterable, List
 
 from bitarray import bitarray
 
-from sthir.mmh3 import murmur3_x86_32 as mmh3_hash
+from mmh3 import murmur3_x86_32 as mmh3_hash
 
 
 class Hash_Funcs:
