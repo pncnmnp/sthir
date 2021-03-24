@@ -1,5 +1,9 @@
 #https://stackoverflow.com/questions/13305290/is-there-a-pure-python-implementation-of-murmurhash?rq=1
 
+from functools import lru_cache
+
+
+@lru_cache(10000)
 def murmur3_x86_32(key, seed = 0):
     c1 = 0xcc9e2d51
     c2 = 0x1b873593
