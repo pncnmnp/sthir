@@ -2,7 +2,9 @@
 import glob
 import json
 import time
+from functools import partial
 from math import log
+from multiprocessing import Pool
 
 import lxml.html
 import requests
@@ -62,6 +64,14 @@ def generate_bloom_filter(file,
     }
 
 
+def process_file(file, false_positive, chunk_size, remove_stopwords):
+    document = generate_bloom_filter(file, false_positive, chunk_size,
+                                     remove_stopwords)
+    return (base2p15_encode("".join(document["sbf"])), document["chunk_size"],
+            document["m"], document["k"], file, document["title"],
+            document["no_items"])
+
+
 def create_search_page(directory,
                        output_file="search.html",
                        false_positive=0.1,
@@ -84,21 +94,13 @@ def create_search_page(directory,
 
     It saves the search file in the output_file path.
     """
-    files = get_all_html_files(directory)
-    bloom_meta = list()
-    search_index = []
-    for file in files:
-        document = generate_bloom_filter(file,
-                                         false_positive=false_positive,
-                                         chunk_size=chunk_size,
-                                         remove_stopwords=remove_stopwords)
 
-        search_index.append([
-            base2p15_encode("".join(document["sbf"])), document["chunk_size"],
-            document["m"], document["k"], file, document["title"],
-            document["no_items"]
-        ])
-        print("Scanned: {}".format(file))
+    files = get_all_html_files(directory)
+    f = partial(process_file,
+                false_positive=false_positive,
+                chunk_size=chunk_size,
+                remove_stopwords=remove_stopwords)
+    search_index = [f(file) for file in files]
 
     with open(output_file, "w", encoding='utf8') as f:
         f.write(convert_2p15.HTML_TEMPLATE["HEAD"])
