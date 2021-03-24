@@ -1,15 +1,16 @@
+from string import ascii_lowercase, digits
+from typing import List
+
 from bs4 import BeautifulSoup
 from newspaper import Article
-
-from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
-from nltk.tokenize import RegexpTokenizer
-from nltk.stem import WordNetLemmatizer 
+from nltk.stem import WordNetLemmatizer
+from nltk.tokenize import RegexpTokenizer, word_tokenize
 
-from string import ascii_lowercase,digits
-from typing import Iterable , List
 
-def extract_html_bs4(html_file_path: str, remove_stopwords: bool = True,enable_lemmetization:bool=False):
+def extract_html_bs4(html_file_path: str,
+                     remove_stopwords: bool = True,
+                     enable_lemmetization: bool = False):
     """
     Given a path to html file it will extract all text in it and return a list of words
     (using library: BeautifulSoup4)
@@ -27,7 +28,7 @@ def extract_html_bs4(html_file_path: str, remove_stopwords: bool = True,enable_l
     # By PeYoTlL
     invalid_words = set(stopwords.words("english") + ['', ""])
 
-    with open(html_file_path , encoding='utf8') as html_file:
+    with open(html_file_path, encoding='utf8') as html_file:
         soup = BeautifulSoup(html_file, features="lxml")
 
     for script in soup(["script", "style"]):
@@ -40,10 +41,11 @@ def extract_html_bs4(html_file_path: str, remove_stopwords: bool = True,enable_l
 
     # Tokenizing words
     tokenizer = RegexpTokenizer(r'\w+')
-    chunks = [tokenizer.tokenize(line.lower()) for line in lines]
 
     # Flatten
-    chunks = sum(chunks, [])
+    chunks = []
+    for line in lines:
+        chunks.extend(tokenizer.tokenize(line.lower()))
 
     # Remove stopwords
     if remove_stopwords:
@@ -51,15 +53,16 @@ def extract_html_bs4(html_file_path: str, remove_stopwords: bool = True,enable_l
             chunk for chunk in chunks if chunk not in list(invalid_words)
         ]
 
-    #Lemmatization   
+    #Lemmatization
     if enable_lemmetization:
-        lemmatizer = WordNetLemmatizer() 
-        chunks = [ lemmatizer.lemmatize(chunk) for chunk in chunks ]
+        lemmatizer = WordNetLemmatizer()
+        chunks = [lemmatizer.lemmatize(chunk) for chunk in chunks]
 
     return chunks
 
+
 def extract_html_newspaper(html_file: str,
-                           remove_stopwords=True, 
+                           remove_stopwords=True,
                            enable_lemmetization=False) -> List[str]:
     """
     Given a path to html file it will extract all text in it and return a list of words
@@ -76,7 +79,7 @@ def extract_html_newspaper(html_file: str,
 
     article = Article(url="")
     # with open(html_file_path, encoding='utf8') as html_file:
-    article.set_html(open(html_file, "r" , encoding='utf8').read())
+    article.set_html(open(html_file, "r", encoding='utf8').read())
     article.parse()
     text = article.text
 
@@ -85,10 +88,11 @@ def extract_html_newspaper(html_file: str,
 
     # Tokenizing words
     tokenizer = RegexpTokenizer(r'\w+')
-    chunks = [tokenizer.tokenize(line.lower()) for line in lines]
 
     # Flatten
-    chunks = sum(chunks, [])
+    chunks = []
+    for line in lines:
+        chunks.extend(tokenizer.tokenize(line.lower()))
 
     # Remove stopwords
     if remove_stopwords:
@@ -96,16 +100,18 @@ def extract_html_newspaper(html_file: str,
             chunk for chunk in chunks if chunk not in list(invalid_words)
         ]
 
-    #Lemmatization   
+    #Lemmatization
     if enable_lemmetization:
-        lemmatizer = WordNetLemmatizer() 
-        chunks = [ lemmatizer.lemmatize(chunk) for chunk in chunks ]
+        lemmatizer = WordNetLemmatizer()
+        chunks = [lemmatizer.lemmatize(chunk) for chunk in chunks]
 
     return chunks
 
+
 if __name__ == "__main__":
-    import requests
     import time
+
+    import requests
     start = time.time()
     response = requests.get("https://endler.dev/2018/ls/")
     print("Fetched URL in {} seconds.".format(time.time() - start))
