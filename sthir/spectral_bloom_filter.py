@@ -75,9 +75,8 @@ class Spectral_Bloom_Filter:
 
     def create_filter(self,
                       tokens: list,
-                      m: int,
+                      p:float,
                       chunk_size: int = 4,
-                      no_hashes: int = 5,
                       to_bitarray: bool = True,
                       bitarray_path: str = "document.bin") -> List[str]:
         """
@@ -87,11 +86,10 @@ class Spectral_Bloom_Filter:
         |  DOI: https://doi.org/10.1145/872757.872787
 
         :param tokens: List of words to index in spectral bloom filter
-        :param m: size of the bitarray
+        :param p: The false postive rate
         :param chunk_size: Size of each counter in Spectral Bloom Filter (default: 4).
                            Default of 4 means that the maximum increment a counter.
                            Can perform is 2**4, which is 16.
-        :param no_hashes: No. of hashes to index word with, (default: 5)
         :param to_bitarray: If True, will convert and save as bitarray in bitarray_path.
                             If False, method will return list of lists containing 
                             the entire bitarray with chunks.
@@ -101,10 +99,11 @@ class Spectral_Bloom_Filter:
         """
         token_frq = Counter(tokens)
         upper_bound = 2**chunk_size - 1
+        m,k = self.optimal_m_k(len(token_frq),p)
         sbf = [0] * m
         for word, frequency in token_frq.items():
             hash_indices = self.create_hashes(token=word,
-                                              hashes=no_hashes,
+                                              hashes=k,
                                               max_length=m)
             mn = min(map(sbf.__getitem__, hash_indices))
             for i in hash_indices:

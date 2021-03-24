@@ -2,6 +2,7 @@
 import glob
 import json
 import time
+from math import log
 
 import lxml.html
 import requests
@@ -45,21 +46,20 @@ def generate_bloom_filter(file,
 
     title = lxml.html.parse(file).find(".//title").text
 
-    no_items = len(tokens)
-    m, k = spectral.optimal_m_k(no_items, false_positive)
-    spectral.create_filter(tokens,
-                           m,
-                           chunk_size,
-                           k,
-                           to_bitarray=True,
-                           bitarray_path=file.replace(".html", ".bin"))
+    sbf = spectral.create_filter(tokens=tokens,
+                                 chunk_size=chunk_size,
+                                 p=false_positive,
+                                 to_bitarray=True,
+                                 bitarray_path=file.replace(".html", ".bin"))
+    m, n = len(sbf), len(tokens)
+    k = round((m / n) * log(2))  # From spectral_bloom_filter.optimal_m_k
     return {
         "m": m,
         "k": k,
         "chunk_size": chunk_size,
         "bin_file": file.replace(".html", ".bin"),
         "title": title,
-        "no_items": no_items
+        "no_items": n,
     }
 
 
@@ -130,5 +130,7 @@ def download_urls(json_file, output_file=""):
 
 
 if __name__ == "__main__":
-    create_search_page(".", output_file="search.html", false_positive=0.01)
+    create_search_page("./html/",
+                       output_file="search.html",
+                       false_positive=0.01)
     # download_urls("a.json")
