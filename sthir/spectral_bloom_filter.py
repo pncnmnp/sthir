@@ -1,53 +1,9 @@
+from functools import lru_cache
 from itertools import product
 from math import ceil, log
 from typing import Counter, List
 
 from mmh3 import murmur3_x86_32 as mmh3_hash
-
-
-class Hash_Funcs:
-    """Class which creates the hash functions required for the Spectral Bloom filters."""
-    def __init__(self, k: int, m: int):
-        """
-        Creates hash functions given m and k
-
-        :param m: size of counter array
-        :param k: number of hash functions
-        """
-        self.k = k
-        self.hash_funcs_list = []
-        for _ in range(self.k):
-            self.hash_funcs_list.append(lambda x, s: mmh3_hash(x, seed=s) % m)
-
-    def get_hashes(self, word: str) -> list:
-        """
-        Returns a list of k hashed indices for the input word
-
-        :param word: Word to be hashed
-        :returns: List of hashes of the word
-        """
-        return [self.hash_funcs_list[i](word, i) for i in range(self.k)]
-
-    def check_hashes(self, word_list: list):
-        """
-        Logs the duplicate hashed indices for words in words_list
-
-        :param word_list: List of words
-        """
-        faulty_words = set()
-        for w in word_list:
-            indices = self.get_hashes(w)
-            res = Hash_Funcs.check_duplicates(indices)
-            if res and res[1] not in faulty_words:
-                faulty_words.add(res[1])
-
-    @staticmethod
-    def check_duplicates(indices_list: list):
-        seen = set()
-        for item in indices_list:
-            if item in seen: return True, item
-            seen.add(item)
-        return False
 
 
 class Spectral_Bloom_Filter:
@@ -66,16 +22,15 @@ class Spectral_Bloom_Filter:
         :param max_length: maximum length of the hash (m)
         :returns: list of hashes
         """
-        return [
-            mmh3_hash(key=token, seed=index) % max_length
-            for index in range(hashes)
-        ]
+        return (mmh3_hash(key=token, seed=index) % max_length
+                for index in range(hashes))
 
-    def create_filter(self,
-                      tokens: list,
-                      p: float,
-                      chunk_size: int = 4,
-                      ) -> List[str]:
+    def create_filter(
+        self,
+        tokens: list,
+        p: float,
+        chunk_size: int = 4,
+    ) -> List[str]:
         """
         Creates a spectral bloom filter.
 
