@@ -75,7 +75,7 @@ class Spectral_Bloom_Filter:
 
     def create_filter(self,
                       tokens: list,
-                      p:float,
+                      p: float,
                       chunk_size: int = 4,
                       to_bitarray: bool = True,
                       bitarray_path: str = "document.bin") -> List[str]:
@@ -99,7 +99,7 @@ class Spectral_Bloom_Filter:
         """
         token_frq = Counter(tokens)
         upper_bound = 2**chunk_size - 1
-        m,k = self.optimal_m_k(len(token_frq),p)
+        m, k = self.optimal_m_k(len(token_frq), p)
         sbf = [0] * m
         for word, frequency in token_frq.items():
             hash_indices = self.create_hashes(token=word,
@@ -109,11 +109,11 @@ class Spectral_Bloom_Filter:
             for i in hash_indices:
                 if sbf[i] == mn:
                     sbf[i] = min(sbf[i] + frequency, upper_bound)
-        sbf = map(lambda x: bin(x)[2:].zfill(chunk_size), sbf)
+        sbf = list(map(lambda x: bin(x)[2:].zfill(chunk_size), sbf))
         if to_bitarray == True:
             arr = bitarray("".join(sbf))
             arr.tofile(open(bitarray_path, 'wb'))
-        return list(sbf)
+        return sbf
 
     def optimal_m_k(self, n: int, p: int) -> tuple:
         """
