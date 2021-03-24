@@ -1,8 +1,6 @@
 from itertools import product
 from math import ceil, log
-from typing import Counter, Iterable, List
-
-from bitarray import bitarray
+from typing import Counter, List
 
 from mmh3 import murmur3_x86_32 as mmh3_hash
 
@@ -77,8 +75,7 @@ class Spectral_Bloom_Filter:
                       tokens: list,
                       p: float,
                       chunk_size: int = 4,
-                      to_bitarray: bool = True,
-                      bitarray_path: str = "document.bin") -> List[str]:
+                      ) -> List[str]:
         """
         Creates a spectral bloom filter.
 
@@ -90,12 +87,7 @@ class Spectral_Bloom_Filter:
         :param chunk_size: Size of each counter in Spectral Bloom Filter (default: 4).
                            Default of 4 means that the maximum increment a counter.
                            Can perform is 2**4, which is 16.
-        :param to_bitarray: If True, will convert and save as bitarray in bitarray_path.
-                            If False, method will return list of lists containing 
-                            the entire bitarray with chunks.
-                            (Default: True).
-        :param bitarray_path: Path to store the bitarray, (default:"document.bin").
-        :returns: An array of binary strings
+        :returns: A list of binary strings
         """
         token_frq = Counter(tokens)
         upper_bound = 2**chunk_size - 1
@@ -110,9 +102,6 @@ class Spectral_Bloom_Filter:
                 if sbf[i] == mn:
                     sbf[i] = min(sbf[i] + frequency, upper_bound)
         sbf = list(map(lambda x: bin(x)[2:].zfill(chunk_size), sbf))
-        if to_bitarray == True:
-            arr = bitarray("".join(sbf))
-            arr.tofile(open(bitarray_path, 'wb'))
         return sbf
 
     def optimal_m_k(self, n: int, p: int) -> tuple:
