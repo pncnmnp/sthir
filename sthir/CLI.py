@@ -1,6 +1,6 @@
 import argparse
 from os.path import isdir,abspath,isfile
-import scan
+from sthir import scan
 
 def _dir_path(path):
     """Validates path to the source folder"""
@@ -115,7 +115,3 @@ def sthir_arg_parser():
         remove_stopwords=args["remove_stopwords"],
         tokens_path = args["json_file"]
     )
-
-if __name__ == '__main__':
-    sthir_arg_parser()
-

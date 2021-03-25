@@ -3,11 +3,11 @@ from collections import Counter
 from logging import Formatter,FileHandler,getLogger
 from logging import DEBUG 
 
-from mmh3 import murmur3_x86_32 as mmh3_hash
+from sthir.mmh3 import murmur3_x86_32 as mmh3_hash
 
 from nltk.stem import WordNetLemmatizer 
-from parse import extract_html_newspaper
-from spectral_bloom_filter import  Spectral_Bloom_Filter 
+from sthir.parse import extract_html_newspaper
+from sthir.spectral_bloom_filter import  Spectral_Bloom_Filter 
 
 import pkgutil
 import csv

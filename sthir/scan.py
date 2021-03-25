@@ -10,10 +10,10 @@ import lxml.html
 import requests
 from typing import List
 
-import convert_2p15 as convert_2p15
-import parse as parse
-import spectral_bloom_filter as spectral_bloom_filter
-from generate_search import base2p15_encode
+import sthir.convert_2p15 as convert_2p15
+import sthir.parse as parse
+import sthir.spectral_bloom_filter as spectral_bloom_filter
+from sthir.generate_search import base2p15_encode
 
 
 def get_all_html_files(directory: str) -> List[str]:
