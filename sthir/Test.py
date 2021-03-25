@@ -283,7 +283,7 @@ class Tester:
                 current_file_path = join(  abs_dir_path , current_file )
 
                 self.__generate_Filter( current_file_path)
-                
+
                 hash_funcs = Hash_Funcs(k=self.k, m= self.m)
 
                 word_counts = Counter(self.tokens)
@@ -334,5 +334,5 @@ class Tester:
 
 if __name__ == '__main__':    
     obj = Tester()
-    # obj.generate_Filter()
-    obj.test_filter_for_file('sample.html')
+    # obj.test_filter_for_file('sample.html')
+    # obj.test_dir('parth')
