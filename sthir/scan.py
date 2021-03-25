@@ -22,14 +22,6 @@ def get_all_html_files(directory: str) -> List[str]:
     """
     return glob.glob(directory + "/*.html")
 
-
-def get_all_bin_files(directory: str) -> List[str]:
-    """
-    Returns list of bin files located in the directory
-    """
-    return glob.glob(directory + "./*.bin")
-
-
 def generate_bloom_filter(file: str,
                           false_positive: float = 0.1,
                           chunk_size: int = 4,
@@ -150,5 +142,5 @@ def download_urls(json_file: str, output_file: str = "") -> None:
 if __name__ == "__main__":
     create_search_page("./htmls/",
                        output_file="search.html",
-                       false_positive=0.01, tokens_path="./tokens.json")
+                       false_positive=0.01, tokens_path="./htmls/tokens.json")
     # download_urls("a.json")
