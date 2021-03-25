@@ -14,7 +14,7 @@ setuptools.setup(
     url="https://github.com/pncnmnp/Spectral-Bloom-Search",
     packages=setuptools.find_packages(),
     install_requires=[
-          'nltk', 'bitarray' ,'bs4','newspaper3k','lxml',
+          'nltk','bs4','newspaper3k','lxml',
           'requests'
       ],
     classifiers=[
