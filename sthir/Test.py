@@ -3,17 +3,61 @@ from collections import Counter
 from logging import Formatter,FileHandler,getLogger
 from logging import DEBUG 
 
+from mmh3 import murmur3_x86_32 as mmh3_hash
 from nltk.stem import WordNetLemmatizer 
-from sthir.parse import extract_html_bs4
-from sthir.spectral_bloom_filter import  Spectral_Bloom_Filter , Hash_Funcs
+from parse import extract_html_bs4
+from spectral_bloom_filter import  Spectral_Bloom_Filter 
+
 from typing import Iterable
 
 import pkgutil
-import io
+# import io
 import csv
 
 from os.path import isfile , abspath , dirname ,join, isdir
 from os import listdir
+
+
+class Hash_Funcs:
+    """Class which creates the hash functions required for the Spectral Bloom filters."""
+    def __init__( self, k:int, m:int):
+        """
+        Creates hash functions given m and k
+        :param m: size of counter array
+        :param k: number of hash functions
+        """
+        self.k = k
+        self.hash_funcs_list = []
+        for _ in range(self.k):
+            self.hash_funcs_list.append( lambda x,s : mmh3_hash( x , seed = s) % m )
+
+    def get_hashes(self, word:str )->list:
+        """
+        Returns a list of k hashed indices for the input word
+        :param word: Word to be hashed
+        :returns: List of hashes of the word
+        """
+        return [ self.hash_funcs_list[i](word , i) for i in range(self.k)]
+
+    def check_hashes(self , word_list:list):
+        """
+        Logs the duplicate hashed indices for words in words_list
+        :param word_list: List of words
+        """
+        faulty_words = set()
+        for w in word_list:
+            indices = self.get_hashes(w)
+            res = Hash_Funcs.check_duplicates(indices)
+            if res and res[1] not in faulty_words:
+                faulty_words.add(res[1])
+
+    @staticmethod
+    def check_duplicates(indices_list:list):
+        seen = set()
+        for item in indices_list:
+            if item in seen:  return True , item
+            seen.add(item)
+        return False
 
 
 def _create_logger():
@@ -113,15 +157,15 @@ class Tester:
         self.spectral = Spectral_Bloom_Filter()
         self.tokens = extract_html_bs4(self.doc_path ,self.remove_stopwords , self.lemmetize )
 
-        self.n = len(self.tokens)
+        self.n = len(set(self.tokens))
         self.m, self.k = self.spectral.optimal_m_k(self.n, self.fp_rate)
         
         self.logger.info( 
             "\tNo_of_words:{} Count_array_size:{} No_of_hashes:{} \n\terror_rate:{} ".format(self.n, self.m, self.k, self.fp_rate)
         )
 
-        self.counter =  self.spectral.create_filter( self.tokens, self.m, self.chunk_size, self.k,
-            method="minimum", to_bitarray=False
+        self.counter =  self.spectral.create_filter( 
+            self.tokens, self.fp_rate, self.chunk_size
         )
 
     def test_filter_for_file(self, doc_path:str):
@@ -140,6 +184,8 @@ class Tester:
 
         fp_count , no_of_unseen_words = 0 , 0
         wrong_count , seen_words = 0 , 0
+
+        print(self.counter)
 
         #Loop that iterates through the testing_words
         for word in self.testing_words:
@@ -233,9 +279,11 @@ class Tester:
         for current_file in listdir(abs_dir_path):
 
             if current_file.endswith(".html"):
+
                 current_file_path = join(  abs_dir_path , current_file )
 
                 self.__generate_Filter( current_file_path)
+                
                 hash_funcs = Hash_Funcs(k=self.k, m= self.m)
 
                 word_counts = Counter(self.tokens)
@@ -282,3 +330,9 @@ class Tester:
                         writer = csv.writer(f)
                         writer.writerow(headers)
                         writer.writerow(entry)
+
+
+if __name__ == '__main__':    
+    obj = Tester()
+    # obj.generate_Filter()
+    obj.test_filter_for_file('sample.html')
