@@ -1,0 +1,6 @@
+nltk
+bs4
+newspaper3k
+lxml
+requests
+pytest
