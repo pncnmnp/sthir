@@ -3,9 +3,11 @@ from collections import Counter
 from logging import Formatter,FileHandler,getLogger
 from logging import DEBUG 
 
-from mmh3 import murmur3_x86_32 as mmh3_hash
+# from mmh3 import murmur3_x86_32 as mmh3_hash
+from mmh3 import one_at_a_time as mmh3_hash
+
 from nltk.stem import WordNetLemmatizer 
-from parse import extract_html_bs4
+from parse import extract_html_newspaper
 from spectral_bloom_filter import  Spectral_Bloom_Filter 
 
 from typing import Iterable
@@ -16,7 +18,6 @@ import csv
 
 from os.path import isfile , abspath , dirname ,join, isdir
 from os import listdir
-
 
 class Hash_Funcs:
     """Class which creates the hash functions required for the Spectral Bloom filters."""
@@ -155,9 +156,10 @@ class Tester:
         self.doc_path = doc_path
 
         self.spectral = Spectral_Bloom_Filter()
-        self.tokens = extract_html_bs4(self.doc_path ,self.remove_stopwords , self.lemmetize )
+        self.tokens = extract_html_newspaper(self.doc_path ,self.remove_stopwords , self.lemmetize )
 
         self.n = len(set(self.tokens))
+
         self.m, self.k = self.spectral.optimal_m_k(self.n, self.fp_rate)
         
         self.logger.info( 
@@ -185,7 +187,6 @@ class Tester:
         fp_count , no_of_unseen_words = 0 , 0
         wrong_count , seen_words = 0 , 0
 
-        print(self.counter)
 
         #Loop that iterates through the testing_words
         for word in self.testing_words:
@@ -252,8 +253,9 @@ class Tester:
 
     def test_dir(self, dir_path:str)-> None :
         """
-        Tests and creates *stats.csv* and *common_stats.txt* file providing stats after testing 
-        all the html files in directory against the test words in a large dictionary.
+        Tests and creates *stats.csv* and *common_stats.txt* file providing 
+        relevant stats after testing all the html files 
+        in directory "dir_path" against the test words in a large dictionary.
         """
         if not isdir(dir_path):
             raise Exception(f"{dir_path} is not a valid directory.")
@@ -282,7 +284,7 @@ class Tester:
 
                 current_file_path = join(  abs_dir_path , current_file )
 
-                self.__generate_Filter( current_file_path)
+                self.__generate_Filter( current_file_path )
 
                 hash_funcs = Hash_Funcs(k=self.k, m= self.m)
 
@@ -322,7 +324,7 @@ class Tester:
                     ]
                 
                 if isfile( csv_file ): 
-                    with open(csv_file, 'a') as f:   
+                    with open(csv_file, 'a',newline ='') as f:   
                         writer = csv.writer(f)
                         writer.writerow(entry)
                 else:
@@ -335,4 +337,4 @@ class Tester:
 if __name__ == '__main__':    
     obj = Tester()
     # obj.test_filter_for_file('sample.html')
-    # obj.test_dir('parth')
+    # obj.test_dir('endler')

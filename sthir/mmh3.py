@@ -3,7 +3,23 @@
 from functools import lru_cache
 
 
-@lru_cache(10000)
+def one_at_a_time(key , seed = 0):
+    hash = seed
+
+    for s in map(ord, key):
+        hash += s
+        hash += (hash << 10)
+        hash ^= (hash >> 6)
+
+    hash += (hash << 3)
+    hash ^= (hash >> 11)
+    hash += (hash << 15)
+
+    return hash
+
+
+
+# @lru_cache(10000)
 def murmur3_x86_32(key, seed = 0):
     c1 = 0xcc9e2d51
     c2 = 0x1b873593
