@@ -3,17 +3,13 @@ from collections import Counter
 from logging import Formatter,FileHandler,getLogger
 from logging import DEBUG 
 
-# from mmh3 import murmur3_x86_32 as mmh3_hash
-from mmh3 import one_at_a_time as mmh3_hash
+from mmh3 import murmur3_x86_32 as mmh3_hash
 
 from nltk.stem import WordNetLemmatizer 
 from parse import extract_html_newspaper
 from spectral_bloom_filter import  Spectral_Bloom_Filter 
 
-from typing import Iterable
-
 import pkgutil
-# import io
 import csv
 
 from os.path import isfile , abspath , dirname ,join, isdir
@@ -60,7 +56,6 @@ class Hash_Funcs:
             seen.add(item)
         return False
 
-
 def _create_logger():
     """
     Returns a well setup logger object for logging the statistics after testing the 
@@ -106,12 +101,8 @@ class Tester:
         >>> obj = Tester()
         >>> # Test on single files
         >>> obj.test_filter_for_file('sample.html') 
-        Size of the filter is: 1000 bytes
         >>> # Test on an entire directory
         >>> obj.test_dir('folder_with_html_files') 
-        Size of the filter is: 1000 bytes
-        Size of the filter is: 2000 bytes
-        ...   
     """
 
     def __init__(self, chunk_size:int = 4 , fp_rate:int = 0.1,remove_stopwords:bool=True , lemmetize:bool=False):
@@ -184,8 +175,8 @@ class Tester:
 
         hash_funcs = Hash_Funcs(k=self.k, m= self.m)
 
-        fp_count , no_of_unseen_words = 0 , 0
-        wrong_count , seen_words = 0 , 0
+        fp_count = no_of_unseen_words = 0 
+        wrong_count = seen_words = 0 
 
 
         #Loop that iterates through the testing_words
@@ -194,7 +185,7 @@ class Tester:
             #Querying the filter
             hashed_indices = hash_funcs.get_hashes(word)
             values = [ int(self.counter[i],2) for i in hashed_indices]
-            SBF_ans = min(values)               #Filter's prediction
+            SBF_ans = min(values)             #Filter's prediction
             current_count = word_counts[word] #Actual count in the document
 
             if current_count == 0:                  # word is absent in the filter
@@ -240,16 +231,16 @@ class Tester:
                 writer.writerow(entry)
 
         # Logging the stats in the log file.
-        self.logger.warning( 
-            "\tNo of words in word-dictionary: {}\n".format( self.no_of_words ) +
-            "\tNo of unseen words in dictionary: {}\n".format( no_of_unseen_words ) +
-            "\tFalse postives found: {}\n".format(fp_count)  +
-            "\tFP_count / No_of_unseen_words: {}\n".format(fp_count / no_of_unseen_words) +   
-            "\tNo of inserted words found in dictionary: {}\n".format(seen_words) +
-            "\tWrong word counts: {}\n".format( wrong_count) + 
-            "\tTheoretical error_probability: {}\n".format( 0.5 ** self.k ) +
-            "\tTotal Error: {}\n".format( (fp_count+wrong_count) / self.no_of_words )  
-        )
+        # self.logger.warning( 
+        #     "\tNo of words in word-dictionary: {}\n".format( self.no_of_words ) +
+        #     "\tNo of unseen words in dictionary: {}\n".format( no_of_unseen_words ) +
+        #     "\tFalse postives found: {}\n".format(fp_count)  +
+        #     "\tFP_count / No_of_unseen_words: {}\n".format(fp_count / no_of_unseen_words) +   
+        #     "\tNo of inserted words found in dictionary: {}\n".format(seen_words) +
+        #     "\tWrong word counts: {}\n".format( wrong_count) + 
+        #     "\tTheoretical error_probability: {}\n".format( 0.5 ** self.k ) +
+        #     "\tTotal Error: {}\n".format( (fp_count+wrong_count) / self.no_of_words )  
+        # )
 
     def test_dir(self, dir_path:str)-> None :
         """
@@ -278,14 +269,16 @@ class Tester:
         ]
 
 
-        for current_file in listdir(abs_dir_path):
+        rows = [ headers ]
+        f = open(csv_file, 'w',newline='')
+        writer = csv.writer(f)
 
+        for current_file in listdir(abs_dir_path):
+            
             if current_file.endswith(".html"):
 
                 current_file_path = join(  abs_dir_path , current_file )
-
                 self.__generate_Filter( current_file_path )
-
                 hash_funcs = Hash_Funcs(k=self.k, m= self.m)
 
                 word_counts = Counter(self.tokens)
@@ -322,19 +315,12 @@ class Tester:
                         seen_words, wrong_count , round( wrong_count / seen_words,10),
                         no_of_unseen_words , fp_count ,round(fp_count / no_of_unseen_words , 10)
                     ]
-                
-                if isfile( csv_file ): 
-                    with open(csv_file, 'a',newline ='') as f:   
-                        writer = csv.writer(f)
-                        writer.writerow(entry)
-                else:
-                    with open(csv_file, 'w',newline='') as f:
-                        writer = csv.writer(f)
-                        writer.writerow(headers)
-                        writer.writerow(entry)
+                rows.append(entry)
+
+        writer.writerows(rows)
 
 
 if __name__ == '__main__':    
     obj = Tester()
     # obj.test_filter_for_file('sample.html')
-    # obj.test_dir('endler')
+    obj.test_dir('parth')
