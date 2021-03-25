@@ -22,8 +22,10 @@ class Spectral_Bloom_Filter:
         :param max_length: maximum length of the hash (m)
         :returns: list of hashes
         """
-        return (mmh3_hash(key=token, seed=index) % max_length
-                for index in range(hashes))
+        return [
+            mmh3_hash(key=token, seed=index) % max_length
+            for index in range(hashes)
+        ]
 
     def create_filter(
         self,
