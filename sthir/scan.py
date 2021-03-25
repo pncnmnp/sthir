@@ -59,7 +59,6 @@ def generate_bloom_filter(file,
         "chunk_size": chunk_size,
         "sbf": sbf,
         "title": title,
-        "no_items": n,
     }
 
 
@@ -67,8 +66,7 @@ def process_file(file, false_positive, chunk_size, remove_stopwords):
     document = generate_bloom_filter(file, false_positive, chunk_size,
                                      remove_stopwords)
     return [base2p15_encode("".join(document["sbf"])), document["chunk_size"],
-            document["m"], document["k"], file, document["title"],
-            document["no_items"]]
+            document["m"], document["k"], file, document["title"]]
 
 
 def create_search_page(directory,
