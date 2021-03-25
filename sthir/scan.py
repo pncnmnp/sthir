@@ -7,6 +7,7 @@ from math import log
 
 import lxml.html
 import requests
+from typing import List
 
 import convert_2p15 as convert_2p15
 import parse as parse
@@ -14,24 +15,24 @@ import spectral_bloom_filter as spectral_bloom_filter
 from generate_search import base2p15_encode
 
 
-def get_all_html_files(directory):
+def get_all_html_files(directory: str) -> List[str]:
     """
     Returns list of html files located in the directory
     """
     return glob.glob(directory + "/*.html")
 
 
-def get_all_bin_files(directory):
+def get_all_bin_files(directory: str) -> List[str]:
     """
     Returns list of bin files located in the directory
     """
     return glob.glob(directory + "./*.bin")
 
 
-def generate_bloom_filter(file,
-                          false_positive=0.1,
-                          chunk_size=4,
-                          remove_stopwords=True):
+def generate_bloom_filter(file: str,
+                          false_positive: float = 0.1,
+                          chunk_size: int = 4,
+                          remove_stopwords: bool =True) -> dict:
     """
     |  Generates a bloom filter and saves it in .bin file.
     |  The saved .bin filename is same as that of the .html file name.
@@ -58,24 +59,25 @@ def generate_bloom_filter(file,
         "k": k,
         "chunk_size": chunk_size,
         "sbf": sbf,
-        "title": title,
-        "no_items": n,
+        "title": title
     }
 
 
-def process_file(file, false_positive, chunk_size, remove_stopwords):
+def process_file(file: str, 
+                false_positive: float, 
+                chunk_size: int, 
+                remove_stopwords: bool) -> List:
     document = generate_bloom_filter(file, false_positive, chunk_size,
                                      remove_stopwords)
-    return (base2p15_encode("".join(document["sbf"])), document["chunk_size"],
-            document["m"], document["k"], file, document["title"],
-            document["no_items"])
+    return [base2p15_encode("".join(document["sbf"])), document["chunk_size"],
+            document["m"], document["k"], file, document["title"]]
 
 
-def create_search_page(directory,
-                       output_file="search.html",
-                       false_positive=0.1,
-                       chunk_size=4,
-                       remove_stopwords=True):
+def create_search_page(directory: str,
+                       output_file: str = "search.html",
+                       false_positive: float = 0.1,
+                       chunk_size: int = 4,
+                       remove_stopwords: bool = True) -> None:
     """
     Generates the search output file using the directory path.
 
@@ -106,7 +108,7 @@ def create_search_page(directory,
         f.write(convert_2p15.HTML_TEMPLATE["TAIL"].format(search_index))
 
 
-def download_urls(json_file, output_file=""):
+def download_urls(json_file: str, output_file: str = "") -> None:
     """
     Downloads and saves HTML files using a JSON file containing list of URLs.
     (For Debugging purposes)
@@ -124,7 +126,7 @@ def download_urls(json_file, output_file=""):
 
 
 if __name__ == "__main__":
-    create_search_page("./html/",
+    create_search_page("./",
                        output_file="search.html",
                        false_positive=0.01)
     # download_urls("a.json")
