@@ -1,7 +1,6 @@
 import argparse
-from pprint import pprint
-from os.path import isdir,abspath
-import sthir.scan as scan
+from os.path import isdir,abspath,isfile
+import scan
 
 def _dir_path(path):
     """Validates path to the source folder"""
@@ -9,6 +8,13 @@ def _dir_path(path):
         return path
     else:
         raise argparse.ArgumentTypeError(f"'{abspath(path)}' is not a valid directory path.")
+
+def _file_path(fpath):
+    """Validates path to a src file"""
+    if isfile(fpath):
+        return fpath
+    else:
+        raise argparse.ArgumentTypeError(f"'{abspath(fpath)}' is not a valid file path.")
 
 def _error_rate_arg(val):
     """Validates the error_rate for the arg parser"""
@@ -46,14 +52,14 @@ def sthir_arg_parser():
         description='Creates a Spectral Bloom filter(SBF) for .html files in the specified directory.'
     )
 
-    #The directory argument - posititonal argument
+    # The directory argument - posititonal argument
     parser.add_argument(
         'path', 
-        type=_dir_path, 
+        type = _dir_path, 
         help='Path to source directory for creating the filter'
     )
 
-    #Error_rate
+    # Error_rate
     parser.add_argument(
         '-e' ,
         type = _error_rate_arg,
@@ -63,7 +69,7 @@ def sthir_arg_parser():
         help='Error_rate for the filter  Range:[0.0,1.0]  Default:0.01'
     )
 
-    #Counter_size
+    # Counter_size
     parser.add_argument(
         '-s' ,
         type = _chunk_size_arg,
@@ -89,6 +95,15 @@ def sthir_arg_parser():
         help='Disable stopword removal from files (not recommended)'
     )
 
+    # For adding custom tokens
+    parser.add_argument(
+        '-ct' , '--custom_tokens',
+        type = _file_path,
+        dest = 'json_file',
+        default = None,
+        help = "path for json file containing custom tokens."
+    )
+
     args = vars(parser.parse_args()) # Convert to dictionary
     # args- Arguments which are needed to create the SB filter.
 
@@ -97,7 +112,10 @@ def sthir_arg_parser():
         output_file="search.html", 
         false_positive=args["error_rate"],
         chunk_size=args["chunk_size"], 
-        remove_stopwords=args["remove_stopwords"]
+        remove_stopwords=args["remove_stopwords"],
+        tokens_path = args["json_file"]
     )
 
+if __name__ == '__main__':
+    sthir_arg_parser()
 
