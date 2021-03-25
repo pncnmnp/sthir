@@ -4,7 +4,6 @@ import json
 import time
 from functools import partial
 from math import log
-from multiprocessing import Pool
 
 import lxml.html
 import requests

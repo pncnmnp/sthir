@@ -1,4 +1,3 @@
-from string import ascii_lowercase, digits
 from typing import List
 
 from bs4 import BeautifulSoup
@@ -49,9 +48,7 @@ def extract_html_bs4(html_file_path: str,
 
     # Remove stopwords
     if remove_stopwords:
-        chunks = [
-            chunk for chunk in chunks if chunk not in invalid_words
-        ]
+        chunks = [chunk for chunk in chunks if chunk not in invalid_words]
 
     #Lemmatization
     if enable_lemmetization:
@@ -96,9 +93,7 @@ def extract_html_newspaper(html_file: str,
 
     # Remove stopwords
     if remove_stopwords:
-        chunks = [
-            chunk for chunk in chunks if chunk not in invalid_words
-        ]
+        chunks = [chunk for chunk in chunks if chunk not in invalid_words]
 
     #Lemmatization
     if enable_lemmetization:

@@ -1,7 +1,6 @@
-from functools import lru_cache
-from itertools import product
+from collections import Counter
 from math import ceil, log
-from typing import Counter, List
+from typing import List
 
 from mmh3 import murmur3_x86_32 as mmh3_hash
 
