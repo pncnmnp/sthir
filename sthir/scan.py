@@ -20,7 +20,10 @@ def get_all_html_files(directory: str) -> List[str]:
     """
     Returns list of html files located in the directory
     """
-    return glob.glob(directory + "/*.html")
+    files = glob.glob(directory + "/*.html")
+    if len(files) == 0:
+        raise AssertionError("The directory: {} has no HTML files.".format(directory))
+    return files
 
 def generate_bloom_filter(file: str,
                           false_positive: float = 0.1,
