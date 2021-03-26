@@ -1,7 +1,7 @@
 import unittest
 from sthir.spectral_bloom_filter import Spectral_Bloom_Filter
 from sthir.Test import Hash_Funcs
-
+from sthir.generate_search import base2p15_encode
 
 class Test_Hashing(unittest.TestCase):
     def test_hashes1(self):
@@ -23,10 +23,17 @@ class Test_SBF(unittest.TestCase):
         actual = SBF.optimal_m_k(100, 0.1)
         self.assertEqual( expected,  actual )
 
+class Test_Encoding(unittest.TestCase):
+    def test_base2p15(self):
+        SBF = Spectral_Bloom_Filter()
+        
+        expected = b'5\xd4\xa1'
+        actual = base2p15_encode("0000100100")
+        self.assertEqual( expected,  bytes(actual,'utf-8') )
+
 if __name__ == '__main__':
     unittest.main()
 
-    
-    # SBF = Spectral_Bloom_Filter()
 
-    # print( ) 
+    
+    

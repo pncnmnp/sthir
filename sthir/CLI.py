@@ -23,7 +23,7 @@ def _error_rate_arg(val):
     except ValueError:
         raise argparse.ArgumentTypeError(f"{val} is not a floating-point literal")
 
-    if val >= 0.0 and val <= 1.0:
+    if val >= 0.00001 and val <= 1.0:
         return val
     raise argparse.ArgumentTypeError(f"{val} not in range [0.0, 1.0]")
 
@@ -95,7 +95,7 @@ def sthir_arg_parser():
         help='Disable stopword removal from files (not recommended)'
     )
 
-    # For adding custom tokens
+    # Option For adding custom tokens
     parser.add_argument(
         '-ct' , '--custom_tokens',
         type = _file_path,
