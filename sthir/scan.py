@@ -118,7 +118,7 @@ def create_search_page(directory: str,
                 chunk_size=chunk_size,
                 remove_stopwords=remove_stopwords)
 
-    search_index = [f(file, tokens=all_tokens[os.path.split(file)[-1]]) for file in files]
+    search_index = [f(os.path.join(directory,file), tokens=all_tokens[os.path.split(file)[-1]]) for file in files]
 
     with open(output_file, "w", encoding='utf8') as f:
         f.write(convert_2p15.HTML_TEMPLATE["HEAD"])
@@ -143,7 +143,7 @@ def download_urls(json_file: str, output_file: str = "") -> None:
 
 
 if __name__ == "__main__":
-    create_search_page("./htmls/",
+    create_search_page("./French/",
                        output_file="search.html",
-                       false_positive=0.01, tokens_path="./htmls/tokens.json")
+                       false_positive=0.01, tokens_path=None)
     # download_urls("a.json")

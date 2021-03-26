@@ -5,7 +5,7 @@ from newspaper import Article
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import RegexpTokenizer, word_tokenize
-
+import warnings
 
 def extract_html_bs4(html_file_path: str,
                      remove_stopwords: bool = True,
@@ -76,7 +76,14 @@ def extract_html_newspaper(html_file: str,
 
     article = Article(url="")
     # with open(html_file_path, encoding='utf8') as html_file:
-    article.set_html(open(html_file, "r", encoding='utf8').read())
+    html_file_content = open(html_file, "r", encoding='utf8').read()
+    article.set_html(html_file_content)
+
+    # Check for the li-ul warning
+    soup = BeautifulSoup(html_file_content, 'lxml')
+    if len(soup.find_all("li")) > 0:
+        warnings.warn("Newspaper3k does not support <li> parsing. See https://github.com/codelucas/newspaper/issues/50")
+
     article.parse()
     text = article.text
 
