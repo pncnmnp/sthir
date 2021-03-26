@@ -1,5 +1,3 @@
-# import convert_2p15
-import glob
 import json
 import time
 from functools import partial
@@ -20,7 +18,8 @@ def get_all_html_files(directory: str) -> List[str]:
     """
     Returns list of html files located in the directory
     """
-    files = glob.glob(directory + "/*.html")
+    files = [ f for f in os.listdir(directory) if f.endswith('.html')]
+
     if len(files) == 0:
         raise AssertionError("The directory: {} has no HTML files.".format(directory))
     return files
@@ -118,6 +117,7 @@ def create_search_page(directory: str,
                 false_positive=false_positive,
                 chunk_size=chunk_size,
                 remove_stopwords=remove_stopwords)
+
     search_index = [f(file, tokens=all_tokens[os.path.split(file)[-1]]) for file in files]
 
     with open(output_file, "w", encoding='utf8') as f:
