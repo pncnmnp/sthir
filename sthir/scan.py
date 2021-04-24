@@ -1,37 +1,36 @@
-# import convert_2p15
-import glob
 import json
+import os
 import time
 from functools import partial
 from math import log
+from typing import List
 
 import lxml.html
 import requests
 
-import convert_2p15 as convert_2p15
-import parse as parse
-import spectral_bloom_filter as spectral_bloom_filter
-from generate_search import base2p15_encode
+import sthir.convert_2p15 as convert_2p15
+import sthir.parse as parse
+import sthir.spectral_bloom_filter as spectral_bloom_filter
+from sthir.generate_search import base2p15_encode
 
 
-def get_all_html_files(directory):
+def get_all_html_files(directory: str) -> List[str]:
     """
     Returns list of html files located in the directory
     """
-    return glob.glob(directory + "/*.html")
+    files = [f for f in os.listdir(directory) if f.endswith('.html')]
+
+    if len(files) == 0:
+        raise AssertionError(
+            "The directory: {} has no HTML files.".format(directory))
+    return files
 
 
-def get_all_bin_files(directory):
-    """
-    Returns list of bin files located in the directory
-    """
-    return glob.glob(directory + "./*.bin")
-
-
-def generate_bloom_filter(file,
-                          false_positive=0.1,
-                          chunk_size=4,
-                          remove_stopwords=True):
+def generate_bloom_filter(file: str,
+                          false_positive: float = 0.1,
+                          chunk_size: int = 4,
+                          remove_stopwords: bool = True,
+                          tokens: List = []) -> dict:
     """
     |  Generates a bloom filter and saves it in .bin file.
     |  The saved .bin filename is same as that of the .html file name.
@@ -41,8 +40,9 @@ def generate_bloom_filter(file,
     This method is internally used in method - create_search_page
     """
     spectral = spectral_bloom_filter.Spectral_Bloom_Filter()
-    tokens = parse.extract_html_newspaper(file,
-                                          remove_stopwords=remove_stopwords)
+    if len(tokens) == 0:
+        tokens = parse.extract_html_newspaper(
+            file, remove_stopwords=remove_stopwords)
 
     title = lxml.html.parse(file).find(".//title").text
 
@@ -51,7 +51,7 @@ def generate_bloom_filter(file,
         chunk_size=chunk_size,
         p=false_positive,
     )
-    m, n = len(sbf), len(tokens)
+    m, n = len(sbf), len(set(tokens))
     k = round((m / n) * log(2))  # From spectral_bloom_filter.optimal_m_k
     return {
         "m": m,
@@ -59,21 +59,42 @@ def generate_bloom_filter(file,
         "chunk_size": chunk_size,
         "sbf": sbf,
         "title": title,
+        "no_items": n
     }
 
 
-def process_file(file, false_positive, chunk_size, remove_stopwords):
+def process_file(file: str,
+                 false_positive: float,
+                 chunk_size: int,
+                 remove_stopwords: bool,
+                 tokens: List = []) -> List:
     document = generate_bloom_filter(file, false_positive, chunk_size,
-                                     remove_stopwords)
-    return [base2p15_encode("".join(document["sbf"])), document["chunk_size"],
-            document["m"], document["k"], file, document["title"]]
+                                     remove_stopwords, tokens)
+    return [
+        base2p15_encode("".join(document["sbf"])), document["chunk_size"],
+        document["m"], document["k"], file, document["title"],
+        document["no_items"]
+    ]
 
 
-def create_search_page(directory,
-                       output_file="search.html",
-                       false_positive=0.1,
-                       chunk_size=4,
-                       remove_stopwords=True):
+def get_all_tokens(path: str, files: str, directory: str) -> dict:
+    all_tokens = json.load(open(path))
+    # as keys are only filenames (without the relative paths), stripping the relative paths
+    strip_files_prefix = [os.path.split(file)[-1] for file in files]
+    for file_name in all_tokens.keys():
+        if (file_name not in strip_files_prefix):
+            raise ValueError(
+                "Filename \"{}\" as mentioned in {} is not specified in directory {}"
+                .format(file_name, path, directory))
+    return all_tokens
+
+
+def create_search_page(directory: str,
+                       output_file: str = "search.html",
+                       false_positive: float = 0.1,
+                       chunk_size: int = 4,
+                       remove_stopwords: bool = True,
+                       tokens_path: str = None) -> None:
     """
     Generates the search output file using the directory path.
 
@@ -88,23 +109,36 @@ def create_search_page(directory,
                        Default of 4 means that the maximum increment a counter can perform is 2**4, which is 16.
     :param remove_stopwords: To remove stopwords
                              (Default - True)
+    :param tokens_path: Specifies the JSON file's path which contains user-given tokens.
+                        By default, if tokens_path is not specified, Newspaper3k is used to scrape the html files. 
+                        tokens_path has the following following format - 
+                        {"filename1": [list of tokens for the HTML filename1], "filename2": [list of tokens for the HTML filename2]}
 
     It saves the search file in the output_file path.
     """
 
     files = get_all_html_files(directory)
+    if tokens_path != None:
+        all_tokens = get_all_tokens(tokens_path, files, directory)
+    else:
+        all_tokens = {f: [] for f in files}
+
     f = partial(process_file,
                 false_positive=false_positive,
                 chunk_size=chunk_size,
                 remove_stopwords=remove_stopwords)
-    search_index = [f(file) for file in files]
+
+    search_index = [
+        f(os.path.join(directory, file),
+          tokens=all_tokens[os.path.split(file)[-1]]) for file in files
+    ]
 
     with open(output_file, "w", encoding='utf8') as f:
         f.write(convert_2p15.HTML_TEMPLATE["HEAD"])
         f.write(convert_2p15.HTML_TEMPLATE["TAIL"].format(search_index))
 
 
-def download_urls(json_file, output_file=""):
+def download_urls(json_file: str, output_file: str = "") -> None:
     """
     Downloads and saves HTML files using a JSON file containing list of URLs.
     (For Debugging purposes)
@@ -122,7 +156,8 @@ def download_urls(json_file, output_file=""):
 
 
 if __name__ == "__main__":
-    create_search_page("./html/",
+    create_search_page("./French/",
                        output_file="search.html",
-                       false_positive=0.01)
+                       false_positive=0.01,
+                       tokens_path=None)
     # download_urls("a.json")

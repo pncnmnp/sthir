@@ -2,7 +2,7 @@ from collections import Counter
 from math import ceil, log
 from typing import List
 
-from mmh3 import murmur3_x86_32 as mmh3_hash
+from sthir.mmh3 import murmur3_x86_32 as mmh3_hash
 
 
 class Spectral_Bloom_Filter:
