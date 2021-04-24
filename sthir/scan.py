@@ -49,14 +49,15 @@ def generate_bloom_filter(file: str,
         chunk_size=chunk_size,
         p=false_positive,
     )
-    m, n = len(sbf), len(tokens)
+    m, n = len(sbf), len(set(tokens))
     k = round((m / n) * log(2))  # From spectral_bloom_filter.optimal_m_k
     return {
         "m": m,
         "k": k,
         "chunk_size": chunk_size,
         "sbf": sbf,
-        "title": title
+        "title": title,
+        "no_items": n
     }
 
 
@@ -68,7 +69,7 @@ def process_file(file: str,
     document = generate_bloom_filter(file, false_positive, chunk_size,
                                      remove_stopwords, tokens)
     return [base2p15_encode("".join(document["sbf"])), document["chunk_size"],
-            document["m"], document["k"], file, document["title"]]
+            document["m"], document["k"], file, document["title"], document["no_items"]]
 
 def get_all_tokens(path: str, files: str, directory: str) -> dict:
     all_tokens = json.load(open(path))
