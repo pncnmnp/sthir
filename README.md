@@ -117,3 +117,6 @@ The library is licensed under MIT License. This project is developed by [Parth P
 [python-img]:https://img.shields.io/badge/python-3.5-green
 [docs-img]:https://img.shields.io/badge/docs-sthir--docs-orange
 [docs-url]:https://pncnmnp.github.io/sthir/
+
+## Data
+https://drive.google.com/uc?id=1UpL5IPdzdPSEmv1U-ethebU_-ODKUxN0&export=download
