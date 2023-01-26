@@ -41,7 +41,7 @@ def generate_bloom_filter(file,
     This method is internally used in method - create_search_page
     """
     spectral = spectral_bloom_filter.Spectral_Bloom_Filter()
-    tokens = parse.extract_html_newspaper(file,
+    tokens = parse.extract_html_bs4(file,
                                           remove_stopwords=remove_stopwords)
 
     title = lxml.html.parse(file).find(".//title").text
